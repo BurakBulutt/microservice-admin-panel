@@ -125,6 +125,7 @@ export const mediaColumnsData = [
     accessor: "slug",
     type: "text",
     priority: 4,
+    isSortable: true,
   },
   {
     accessor: "likeCount.likeCount",
@@ -135,11 +136,6 @@ export const mediaColumnsData = [
     accessor: "likeCount.dislikeCount",
     type: "number",
     priority: 6,
-  },
-  {
-    accessor: "numberOfViews",
-    type: "number",
-    priority: 7,
   },
 ];
 
@@ -194,13 +190,12 @@ export const categoryColumnsData = [
   {
     accessor: "description",
     type: "text",
-    priority: 1,
+    priority: 1
   },
   {
     accessor: "slug",
     type: "text",
-    priority: 2,
-    isSortable: true,
+    priority: 2
   },
 ];
 
@@ -209,6 +204,7 @@ export const xmlDefinitionColumnsData = [
     accessor: "fileName",
     type: "text",
     priority: 0,
+    isSortable: true,
   },
   {
     accessor: "type",
@@ -231,4 +227,43 @@ export const xmlDefinitionColumnsData = [
     type: "modal",
     priority: 3,
   },
+];
+export const entityLogColumnsData = [
+  {
+    accessor: "process",
+    type: "enum",
+    enumType: "processType",
+    priority: 0,
+    isSortable: true,
+  },
+  {
+    accessor: "entity",
+    type: "text",
+    priority: 1,
+    isSortable: true,
+  },
+  {
+    accessor: "entityId",
+    type: "text",
+    priority: 2,
+    isSortable: true,
+  },
+  {
+    accessor: "user",
+    type: "modal",
+    priority: 3,
+  },
+];
+export const fansubColumnsData = [
+  {
+    accessor: "name",
+    type: "text",
+    priority: 0,
+    isSortable: true,
+  },
+  {
+    accessor: "url",
+    type: "text",
+    priority: 1
+  }
 ];

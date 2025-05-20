@@ -7,6 +7,7 @@ const COLOR_CLASSES = {
     yellow: "bg-yellow-500 hover:bg-yellow-600",
     brand: "bg-brand-500 hover:bg-brand-600",
     gray: "bg-gray-500 hover:bg-gray-600",
+    navy: "bg-navy-500 hover:bg-navy-600",
 };
 
 const ActionButton = ({onClick, label,color,icon}) => {

@@ -8,8 +8,8 @@ export class XmlDefinitionService {
     return  createRequest(defaultUrl, "GET", null, params);
   }
 
-  async startJob(params) {
-    return  createRequest(defaultUrl + `/start-job`, "GET", null, params);
+  async startJob(id) {
+    return  createRequest(defaultUrl + `/${id}/start-job`, "GET", null, null);
   }
 
   async import(request) {

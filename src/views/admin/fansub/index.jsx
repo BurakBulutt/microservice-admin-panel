@@ -1,30 +1,24 @@
-import DefaultTable from "../../../components/table/DefaultTable";
-import React, { useCallback, useEffect, useState } from "react";
-import { commentColumnsData } from "../../../components/table/columnsData";
-import { CommentService } from "../../../services/CommentService";
-import {FaEdit, FaIdCard, FaPlus, FaTrash} from "react-icons/fa";
-import UserBanner from "./components/user";
-import Reply from "./components/reply";
-import CommentDialog from "./components/dialog";
-import { useTranslation } from "react-i18next";
-import { useToast } from "../../../utilities/toast/toast";
-import CustomModal from "../../../components/modal";
-import IdCard from "../../../components/idcard";
-import { useFormik } from "formik";
-import {
-  CommentCreateValidationSchema,
-  CommentUpdateValidationSchema,
-} from "../../../utilities/validation/ValidationSchemas";
-
-import ActionButton from "../../../components/actionbutton";
-import Header from "../../../components/header";
-import Paginator from "../../../components/table/Paginator";
+import {useCallback, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useToast} from "../../../utilities/toast/toast.js";
+import {useFormik} from "formik";
+import {FansubValidationSchema} from "../../../utilities/validation/ValidationSchemas.js";
+import CustomModal from "../../../components/modal/index.jsx";
+import ActionButton from "../../../components/actionbutton/index.jsx";
 import Card from "../../../components/card/index.jsx";
+import Header from "../../../components/header/index.jsx";
+import DefaultTable from "../../../components/table/DefaultTable.jsx";
+import {fansubColumnsData} from "../../../components/table/columnsData.js";
+import Paginator from "../../../components/table/Paginator.jsx";
+import IdCard from "../../../components/idcard/index.jsx";
+import {FaEdit, FaIdCard, FaTrash} from "react-icons/fa";
 import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
+import {FansubService} from "../../../services/FansubService.js";
+import FansubDialog from "./components/dialog/index.jsx";
 
-const service = new CommentService();
+const service = new FansubService();
 
-const Comment = (props) => {
+const Fansub = (props) => {
   const [items, setItems] = useState({
     content: [],
     page: {
@@ -35,12 +29,9 @@ const Comment = (props) => {
     },
   });
   const [selectedItems, setSelectedItems] = useState([]);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const { t } = useTranslation();
   const toast = useToast();
-  const [validationSchema, setValidationSchema] = useState(
-    CommentCreateValidationSchema
-  );
-  const [dialogVisible, setDialogVisible] = useState(false);
   const defaultSorting = {
     id: "created",
     desc: true
@@ -48,30 +39,25 @@ const Comment = (props) => {
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    sort: "created,desc",
-    target: null
+    sort: "created,desc"
   });
 
   const baseItem = {
-    content: "",
-    userId: null,
-    type: "COMMENT",
-    targetId: null,
-    parentId: null,
+    name: "",
+    url: ""
   };
   const formik = useFormik({
-    validationSchema: validationSchema,
     initialValues: baseItem,
-    validateOnMount: false,
+    validationSchema: FansubValidationSchema,
     validateOnBlur: false,
     validateOnChange: false,
+    validateOnMount: false,
     onSubmit: (values) => {
       if (values.id) {
-        updateItem(values);
+        updateItem(values.id, values);
       } else {
         createItem(values);
       }
-      setDialogVisible(false);
     },
   });
 
@@ -83,22 +69,17 @@ const Comment = (props) => {
   );
 
   const getItems = useCallback(() => {
-      service
-          .filter(requestParams)
-          .then((response) => {
-            if (response.status === 200) {
-              setItems(response.data);
-            }
-          })
-          .catch((error) => {
-            catchError(error, {});
-          });
-
+    service
+      .filter(requestParams)
+      .then((response) => {
+        if (response.status === 200) {
+          setItems(response.data);
+        }
+      })
+      .catch((error) => {
+        catchError(error, {});
+      });
   }, [requestParams, catchError]);
-
-  useEffect(() => {
-    getItems();
-  }, [getItems]);
 
   const createItem = (request) => {
     service
@@ -108,28 +89,28 @@ const Comment = (props) => {
           toast.success(t("success"), {
             onClose: getItems,
           });
+          hideDialog();
         }
       })
       .catch((error) => {
         catchError(error, {});
       });
   };
-
-  const updateItem = (request) => {
+  const updateItem = (id, request) => {
     service
-      .update(request.id, request)
+      .update(id, request)
       .then((response) => {
         if (response.status === 204) {
           toast.success(t("success"), {
             onClose: getItems,
           });
+          hideDialog();
         }
       })
       .catch((error) => {
         catchError(error, {});
       });
   };
-
   const deleteItem = (id) => {
     service
       .delete(id)
@@ -145,10 +126,11 @@ const Comment = (props) => {
       });
   };
 
+  useEffect(() => {
+    getItems();
+  }, [getItems]);
+
   const handleSubmitFormik = () => {
-    if (formik.values.type === "COMMENT") {
-      formik.setFieldValue("parentId", null);
-    }
     formik.handleSubmit();
   };
   const hideDialog = () => {
@@ -156,23 +138,17 @@ const Comment = (props) => {
     setDialogVisible(false);
   };
   const handleCreate = () => {
-    setValidationSchema(CommentCreateValidationSchema);
+    formik.resetForm();
     formik.setValues(baseItem);
     setDialogVisible(true);
   };
   const handleUpdate = (data) => {
-    setValidationSchema(CommentUpdateValidationSchema);
-    formik.setValues({
-      id: data.id,
-      content: data.content,
-    });
+    formik.resetForm();
+    formik.setValues(data);
     setDialogVisible(true);
   };
   const handleDelete = (id) => {
     deleteItem(id);
-  };
-  const handleAddLike = (id) => {
-    //TODO
   };
 
   const handleSelect = useCallback((e, items) => {
@@ -217,10 +193,9 @@ const Comment = (props) => {
   }, [requestParams.sort]);
 
   const searchKeyDown = useCallback((e) => {
-
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-      console.log("Searching comments:", value);
+      console.log("Searching fansub:", value);
     }
   }, []);
 
@@ -245,12 +220,6 @@ const Comment = (props) => {
             label={t("update")}
           />
           <ActionButton
-              onClick={() => handleAddLike(data.id)}
-              icon={<FaPlus size={24} />}
-              color={"green"}
-              label={t("addLike")}
-          />
-          <ActionButton
             onClick={() => handleDelete(data.id)}
             icon={<FaTrash size={24} />}
             color={"red"}
@@ -262,28 +231,9 @@ const Comment = (props) => {
     [props.actionButtons]
   );
 
-  const modalComponent = useCallback((data, accessor) => {
-    switch (accessor) {
-      case "content":
-        return (
-          <p className="block font-sans text-xl font-normal leading-relaxed text-navy-800 antialiased dark:text-white">
-            {data}
-          </p>
-        );
-      case "user":
-        return <UserBanner data={data} />;
-      case "parent":
-        return data && <Reply data={Array(data)} />;
-      case "commentList":
-        return <Reply data={data} />;
-      default:
-        return <></>;
-    }
-  }, []);
-
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-6"}>
-      <CommentDialog
+      <FansubDialog
         formik={formik}
         dialogVisible={dialogVisible}
         hideDialog={hideDialog}
@@ -297,18 +247,17 @@ const Comment = (props) => {
         component={props.header}
       />
       <DefaultTable
-        columnsData={commentColumnsData}
+        columnsData={fansubColumnsData}
         tableData={items.content}
         actionButtons={actionButtons}
         selectedItems={selectedItems}
         handleSelect={handleSelect}
         onSortChange={onSortChange}
         defaultSorting={defaultSorting}
-        modalComponent={modalComponent}
       />
       <Paginator page={items.page} onPageChange={onPageChange} />
     </Card>
   );
 };
 
-export default Comment;
+export default Fansub;

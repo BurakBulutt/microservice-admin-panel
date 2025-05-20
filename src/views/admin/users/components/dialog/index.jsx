@@ -120,7 +120,7 @@ const UserDialog = (props) => {
               </div>
             </>
           )}
-          <div className="mb-4">
+          <div className="mb-4 ml-2">
             <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("enabled")}</label>
             <Switch
                 id="enabled"
@@ -130,7 +130,7 @@ const UserDialog = (props) => {
                 }}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 ml-2">
             <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("emailVerified")}</label>
             <Switch
                 id="emailVerified"

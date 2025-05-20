@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import Checkbox from "../checkbox";
 
 import {
@@ -13,10 +13,10 @@ import CustomModal from "../../components/modal/index";
 import {useTranslation} from "react-i18next";
 import enumFactory from "../../utilities/enum/enumFactory";
 import {memo} from "react";
-import {FaDocker, FaGoogle} from "react-icons/fa";
 
 import "yet-another-react-lightbox/styles.css";
 import Lightbox from "yet-another-react-lightbox";
+import { MdClose, MdDone } from "react-icons/md";
 
 const columnHelper = createColumnHelper();
 
@@ -27,6 +27,8 @@ const DefaultTable = ({
                           selectedItems,
                           handleSelect,
                           actionButtons,
+                          onSortChange,
+                          defaultSorting
                       }) => {
     const {t} = useTranslation();
     const displayEnumVal = useCallback(
@@ -51,9 +53,9 @@ const DefaultTable = ({
                         ? "bg-green-500 dark:bg-green-400"
                         : "bg-red-500 dark:bg-red-400";
                     const icon = value ? (
-                        <FaGoogle className="text-xs"/>
+                        <MdDone className="text-xs"/>
                     ) : (
-                        <FaDocker className="text-xs"/>
+                        <MdClose className="text-xs"/>
                     );
                     return (
                         <div
@@ -200,13 +202,21 @@ const DefaultTable = ({
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        debugTable: false,
+        manualSorting:true,
+        debugTable: true,
     });
 
     const isChecked = useCallback(() => {
         if (!data.length) return false;
         return data.every((item) => selectedItems.includes(item.id));
     }, [data, selectedItems]);
+
+    useEffect(() => {
+        if (onSortChange) {
+            const sort = sorting.length ? sorting[0] : defaultSorting;
+            onSortChange(sort);
+        }
+    }, [sorting,onSortChange]);
 
     return (
         <div className="mt-2 overflow-x-auto">

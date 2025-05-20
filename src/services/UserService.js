@@ -7,6 +7,10 @@ export class UserService {
     return createRequest(defaultUrl, "GET", null, params);
   }
 
+  async getById(id) {
+    return createRequest(defaultUrl + `/${id}`, "GET", null, null);
+  }
+
   async filter(params) {
     return createRequest(defaultUrl + `/filter`, "GET", null, params);
   }
@@ -45,4 +49,16 @@ export class UserService {
     return createRequest(defaultUrl + `/count`, "GET", null, null);
   }
 
+  async changePassword(id,request) {
+    return createRequest(
+      defaultUrl + `/${id}/change-password`,
+      "POST",
+      request,
+      null
+    );
+  }
+
+  async updateProfile(id, request) {
+    return createRequest(defaultUrl + `/${id}/update-profile`, "PUT", request, null);
+  }
 }

@@ -1,6 +1,6 @@
 import { mediaColumnsData } from "../../../../../components/table/columnsData";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { FaEdit, FaIdCard, FaTrash } from "react-icons/fa";
+import {FaEdit, FaIdCard, FaPlus, FaTrash} from "react-icons/fa";
 import { useFormik } from "formik";
 
 import MediaDialog from "../mediadialog";
@@ -21,11 +21,12 @@ import {useToast} from "../../../../../utilities/toast/toast.js";
 import {MediaValidationSchema} from "../../../../../utilities/validation/ValidationSchemas.js";
 import Card from "../../../../../components/card/index.jsx";
 import Paginator from "../../../../../components/table/Paginator.jsx";
+import CustomErrorToast from "../../../../../components/toast/CustomErrorToast.jsx";
 
 const service = new MediaService();
 
 const Media = (props) => {
-  const { contentId,metaComponent } = props;
+  const { contentId } = props;
   const [items, setItems] = useState({
     content: [],
     page: {
@@ -39,12 +40,15 @@ const Media = (props) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const { t } = useTranslation();
   const toast = useToast();
+  const defaultSorting = {
+    id: "count",
+    desc: false
+  };
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    name: null,
-    content: contentId,
-    sort:"count,asc"
+    sort:"count,asc",
+    content: contentId
   });
 
   const baseItem = {
@@ -73,13 +77,12 @@ const Media = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(error.message, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
     },
     [toast]
   );
 
   const getItems = useCallback(() => {
-    if(metaComponent && !contentId) return;
     service
       .filter(requestParams)
       .then((response) => {
@@ -90,7 +93,7 @@ const Media = (props) => {
       .catch((error) => {
         catchError(error, {});
       });
-  }, [requestParams, catchError,metaComponent,contentId]);
+  }, [requestParams, catchError]);
 
   const createItem = (request) => {
     service
@@ -164,6 +167,9 @@ const Media = (props) => {
   const handleDelete = (id) => {
     deleteItem(id);
   };
+  const handleAddLike = (id) => {
+    //TODO
+  };
 
   const handleSelect = useCallback((e, items) => {
     if (e.target.checked) {
@@ -190,15 +196,26 @@ const Media = (props) => {
     });
   }, []);
 
+  const onSortChange = useCallback((sorting) => {
+    if (!sorting) return;
+
+    const label = sorting.id;
+    const direction = sorting.desc ? "desc" : "asc";
+
+    const sort = `${label},${direction}`;
+
+    if (sort === requestParams.sort) return;
+
+    setRequestParams((prevState) => ({
+      ...prevState,
+      sort: sort
+    }));
+  }, [requestParams.sort]);
+
   const searchKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-
-      setRequestParams((prevState) => ({
-        ...prevState,
-        page: 0,
-        name: value ? value : null,
-      }));
+      console.log("Searching media:", value);
     }
   }, []);
 
@@ -225,6 +242,12 @@ const Media = (props) => {
             icon={<FaEdit size={24} />}
             color={"blue"}
             label={t("update")}
+          />
+          <ActionButton
+              onClick={() => handleAddLike(data.id)}
+              icon={<FaPlus size={24} />}
+              color={"green"}
+              label={t("addLike")}
           />
           <ActionButton
             onClick={() => handleDelete(data.id)}
@@ -262,7 +285,8 @@ const Media = (props) => {
         actionButtons={actionButtons}
         selectedItems={selectedItems}
         handleSelect={handleSelect}
-        onPageChange={onPageChange}
+        onSortChange={onSortChange}
+        defaultSorting={defaultSorting}
       />
       <Paginator page={items.page} onPageChange={onPageChange} />
     </Card>

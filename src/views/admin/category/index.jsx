@@ -14,6 +14,7 @@ import {categoryColumnsData} from "../../../components/table/columnsData.js";
 import Paginator from "../../../components/table/Paginator.jsx";
 import IdCard from "../../../components/idcard/index.jsx";
 import {FaEdit, FaIdCard, FaTrash} from "react-icons/fa";
+import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
 
 
 const service = new CategoryService();
@@ -32,10 +33,14 @@ const Category = (props) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const { t } = useTranslation();
   const toast = useToast();
+  const defaultSorting = {
+    id: "created",
+    desc: true
+  };
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    name: null,
+    sort: "created,desc"
   });
 
   const baseItem = {
@@ -60,7 +65,7 @@ const Category = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(error.message, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
     },
     [toast]
   );
@@ -173,15 +178,26 @@ const Category = (props) => {
     });
   }, []);
 
+  const onSortChange = useCallback((sorting) => {
+    if (!sorting) return;
+
+    const label = sorting.id;
+    const direction = sorting.desc ? "desc" : "asc";
+
+    const sort = `${label},${direction}`;
+
+    if (sort === requestParams.sort) return;
+
+    setRequestParams((prevState) => ({
+      ...prevState,
+      sort: sort
+    }));
+  }, [requestParams.sort]);
+
   const searchKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-
-      setRequestParams((prevState) => ({
-        ...prevState,
-        page: 0,
-        name: value ? value : null,
-      }));
+      console.log("Searching category:", value);
     }
   }, []);
 
@@ -238,7 +254,8 @@ const Category = (props) => {
         actionButtons={actionButtons}
         selectedItems={selectedItems}
         handleSelect={handleSelect}
-        onPageChange={onPageChange}
+        onSortChange={onSortChange}
+        defaultSorting={defaultSorting}
       />
       <Paginator page={items.page} onPageChange={onPageChange} />
     </Card>

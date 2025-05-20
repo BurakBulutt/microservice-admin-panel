@@ -247,7 +247,6 @@ const CommentDialog = (props) => {
                         buttonText={t("parent")}
                         component={
                           <Comment
-                            targetId={formik.values.targetId}
                             header={header("parent")}
                             actionButtons={(data) =>
                               actionButtons(data, "parent")

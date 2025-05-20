@@ -9,7 +9,7 @@ const Sidebar = ({ open, onClose }) => {
   const routes = ROUTES;
 
   const filterRoutes = (routes) => {
-    return routes.filter((route) => route.layout === "/admin" && !route.parentPath);
+    return routes.filter((route) => route.layout === "/admin" && route.sideBarVisible);
   };
 
   return (

@@ -11,9 +11,9 @@ const SelectDialog=(props) => {
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
 
-    const close = (e) => {
-        props.onClose(e);
+    const close = () => {
         onClose();
+        props.onClose();
     }
 
     return (
@@ -50,8 +50,8 @@ const SelectDialog=(props) => {
                       type="button"
                       className="cursor-pointer rounded-md bg-green-500 px-4 py-2 font-bold text-white"
                       onClick={() => {
-                          props.onSave();
                           onClose();
+                          props.onSave();
                       }}
                   >
                       {t("save")}

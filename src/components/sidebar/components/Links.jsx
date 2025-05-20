@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 import DashIcon from "../../../assets/svg/dashicon.svg";
 import {useTranslation} from "react-i18next";
 

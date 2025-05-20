@@ -1,7 +1,7 @@
 import DefaultTable from "../../../components/table/DefaultTable";
 import { xmlDefinitionColumnsData } from "../../../components/table/columnsData";
 import React, { useCallback, useEffect, useState } from "react";
-import { FaIdCard, FaTrash } from "react-icons/fa";
+import { FaIdCard, FaJoget, FaTrash } from "react-icons/fa";
 import { useFormik } from "formik";
 import CustomModal from "../../../components/modal";
 import IdCard from "../../../components/idcard";
@@ -14,7 +14,9 @@ import Paginator from "../../../components/table/Paginator";
 import Card from "../../../components/card";
 import { XmlDefinitionService } from "../../../services/XmlDefinitionService";
 import XmlDefinitionDialog from "./components/dialog";
-import {XmlDefinitionValidationSchema} from "../../../utilities/validation/ValidationSchemas.js";
+import { XmlDefinitionValidationSchema } from "../../../utilities/validation/ValidationSchemas.js";
+import { MdOutlineRestartAlt } from "react-icons/md";
+import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
 
 const service = new XmlDefinitionService();
 
@@ -32,10 +34,14 @@ const XmlDefinition = (props) => {
   const [dialogVisible, setDialogVisible] = useState(false);
   const { t } = useTranslation();
   const toast = useToast();
+  const defaultSorting = {
+    id: "created",
+    desc: true
+  };
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    sort:"created,desc"
+    sort: "created,desc",
   });
 
   const baseItem = {
@@ -49,13 +55,13 @@ const XmlDefinition = (props) => {
     validateOnChange: false,
     validateOnMount: false,
     onSubmit: (values) => {
-      importXmlDefinition(values)
+      importXmlDefinition(values);
     },
   });
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(error.message, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
     },
     [toast]
   );
@@ -75,18 +81,18 @@ const XmlDefinition = (props) => {
 
   const importXmlDefinition = (request) => {
     service
-    .import(request)
-    .then((response) => {
-      if (response.status === 201) {
-        toast.success(t("success"), {
-          onClose: getItems,
-        });
-        hideDialog();
-      }
-    })
-    .catch((error) => {
-      catchError(error, {});
-    });
+      .import(request)
+      .then((response) => {
+        if (response.status === 201) {
+          toast.success(t("success"), {
+            onClose: getItems,
+          });
+          hideDialog();
+        }
+      })
+      .catch((error) => {
+        catchError(error, {});
+      });
   };
   const deleteXmlDefinition = (id) => {
     service
@@ -96,6 +102,18 @@ const XmlDefinition = (props) => {
           toast.success(t("success"), {
             onClose: getItems,
           });
+        }
+      })
+      .catch((error) => {
+        catchError(error, {});
+      });
+  };
+  const startDefinitionJob = (id) => {
+    service
+      .startJob(id)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success(t("success"), {});
         }
       })
       .catch((error) => {
@@ -121,6 +139,9 @@ const XmlDefinition = (props) => {
   };
   const handleDelete = (id) => {
     deleteXmlDefinition(id);
+  };
+  const handleStartJob = (id) => {
+    startDefinitionJob(id);
   };
 
   const handleSelect = useCallback((e, items) => {
@@ -148,6 +169,22 @@ const XmlDefinition = (props) => {
     });
   }, []);
 
+  const onSortChange = useCallback((sorting) => {
+    if (!sorting) return;
+
+    const label = sorting.id;
+    const direction = sorting.desc ? "desc" : "asc";
+
+    const sort = `${label},${direction}`;
+
+    if (sort === requestParams.sort) return;
+
+    setRequestParams((prevState) => ({
+      ...prevState,
+      sort: sort
+    }));
+  }, [requestParams.sort]);
+
   const actionButtons = useCallback(
     (data) => {
       return props.actionButtons ? (
@@ -155,10 +192,18 @@ const XmlDefinition = (props) => {
       ) : (
         <div className="flex space-x-2">
           <CustomModal
-            title={"ID"}
+            title={"id"}
             component={<IdCard id={data.id} />}
             extra={
               "flex cursor-pointer items-center justify-center rounded-lg bg-brand-500 p-2 text-white hover:bg-brand-600"
+            }
+            buttonText={<FaIdCard size={24} />}
+          />
+          <CustomModal
+            title={"Job Execution"}
+            component={<IdCard id={data.jobExecutionId} />}
+            extra={
+              "flex cursor-pointer items-center justify-center rounded-lg bg-green-400 p-2 text-white hover:bg-green-500"
             }
             buttonText={<FaIdCard size={24} />}
           />
@@ -167,6 +212,12 @@ const XmlDefinition = (props) => {
             icon={<FaTrash size={24} />}
             color={"red"}
             label={t("delete")}
+          />
+          <ActionButton
+            onClick={() => handleStartJob(data.id)}
+            icon={<MdOutlineRestartAlt size={24} />}
+            color={"pink"}
+            label={t("startJob")}
           />
         </div>
       );
@@ -201,7 +252,8 @@ const XmlDefinition = (props) => {
         actionButtons={actionButtons}
         selectedItems={selectedItems}
         handleSelect={handleSelect}
-        onPageChange={onPageChange}
+        onSortChange={onSortChange}
+        defaultSorting={defaultSorting}
         modalComponent={modalComponent}
       />
       <Paginator page={items.page} onPageChange={onPageChange} />

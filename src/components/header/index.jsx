@@ -15,7 +15,7 @@ const Header = ({
 
   return (
     <header className="relative flex items-center justify-between pt-4">
-      <div className="flex w-full flex-row items-center justify-between">
+      <div className="flex w-full flex-row items-center justify-between gap-4">
         {component ? (
           component
         ) : (

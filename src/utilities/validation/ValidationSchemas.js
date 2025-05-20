@@ -30,6 +30,13 @@ export const UserUpdateValidationSchema = Yup.object({
     birthdate: Yup.string().required("Birthdate is required"),
 });
 
+export const UserChangePasswordValidationSchema = Yup.object({
+    newPassword: Yup.string().required("Password is required")
+        .min(8, "Password Must Be At Least 8 Characters")
+        .matches(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+=-{};:'<>,./?])[a-zA-Z0-9!@#$%^&*()_+=-{};:'<>,./?]{8,}$/, "Password Must Contain At Least One Uppercase Letter And One Special Character"),
+    newPasswordRe: Yup.string().required("Password Re is Required").oneOf([Yup.ref('newPassword')], "Passwords Do Not Match")
+});
+
 export const ContentValidationSchema = Yup.object({
     name: Yup.string().required("Name is Required"),
     description: Yup.string().required("Description is Required"),
@@ -83,4 +90,9 @@ export const CommentUpdateValidationSchema = Yup.object({
 export const XmlDefinitionValidationSchema = Yup.object({
     type: Yup.string().required("Type is Required"),
     base64: Yup.string().required("File is Required"),
+});
+
+export const FansubValidationSchema = Yup.object({
+    name: Yup.string().required("Name is Required"),
+    url: Yup.string().notRequired(),
 });

@@ -1,23 +1,29 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   UserCreateValidationSchema,
-  UserUpdateValidationSchema
+  UserUpdateValidationSchema,
 } from "../../../utilities/validation/ValidationSchemas.js";
-import {useTranslation} from "react-i18next";
-import {useToast} from "../../../utilities/toast/toast.js";
-import {useFormik} from "formik";
-import {UserService} from "../../../services/UserService.js";
+import { useTranslation } from "react-i18next";
+import { useToast } from "../../../utilities/toast/toast.js";
+import { useFormik } from "formik";
+import { UserService } from "../../../services/UserService.js";
 import Header from "../../../components/header/index.jsx";
 import UserDialog from "./components/dialog/index.jsx";
 import CustomModal from "../../../components/modal/index.jsx";
 import ActionButton from "../../../components/actionbutton/index.jsx";
 import DefaultTable from "../../../components/table/DefaultTable.jsx";
-import {usersColumnsData} from "../../../components/table/columnsData.js";
+import { usersColumnsData } from "../../../components/table/columnsData.js";
 import Paginator from "../../../components/table/Paginator.jsx";
 import Card from "../../../components/card/index.jsx";
 import IdCard from "../../../components/idcard/index.jsx";
-import {FaEdit, FaIdCard, FaMailBulk, FaTrash, FaUserLock} from "react-icons/fa";
-
+import {
+  FaEdit,
+  FaIdCard,
+  FaMailBulk,
+  FaTrash,
+  FaUserLock,
+} from "react-icons/fa";
+import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
 
 const service = new UserService();
 
@@ -41,7 +47,7 @@ const Users = (props) => {
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    username: null,
+    username: '',
   });
 
   const baseRequest = {
@@ -75,7 +81,7 @@ const Users = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(error.message, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
     },
     [toast]
   );
@@ -231,7 +237,7 @@ const Users = (props) => {
       setRequestParams((prevState) => ({
         ...prevState,
         page: 0,
-        username: value ? value : null,
+        username: value ? value : '',
       }));
     }
   }, []);
@@ -295,13 +301,12 @@ const Users = (props) => {
         searchKeyDown={searchKeyDown}
         component={props.header}
       />
-      <DefaultTable 
+      <DefaultTable
         columnsData={usersColumnsData}
         tableData={items.content}
         actionButtons={actionButtons}
         selectedItems={selectedItems}
         handleSelect={handleSelect}
-        onPageChange={onPageChange}
       />
       <Paginator page={items.page} onPageChange={onPageChange} />
     </Card>

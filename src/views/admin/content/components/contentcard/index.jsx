@@ -1,5 +1,5 @@
 import Card from "../../../../../components/card";
-import {useParams} from "react-router";
+import {useParams} from "react-router-dom";
 import React, {useState} from "react";
 
 import Media from "../media";
@@ -45,7 +45,7 @@ const ContentCard = () => {
           <ContentMeta contentId={id} />
         </div>
         <div style={{ display: activeTab === "media-list" ? 'block' : 'none' }}>
-          <Media metaComponent={true} contentId={id} />
+          <Media contentId={id} />
         </div>
       </div>
     </Card>

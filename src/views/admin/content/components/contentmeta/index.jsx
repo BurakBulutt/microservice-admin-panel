@@ -4,13 +4,14 @@ import { FaImage, FaPlus, FaTrash } from "react-icons/fa";
 import InputField from "../../../../../components/fields/InputField";
 import Editor from "react-simple-wysiwyg";
 import Category from "../../../category";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import {ContentService} from "../../../../../services/ContentService.js";
 import {ContentValidationSchema} from "../../../../../utilities/validation/ValidationSchemas.js";
 import {useToast} from "../../../../../utilities/toast/toast.js";
 import SelectDialog from "../../../../../components/selectdialog/index.jsx";
+import CustomErrorToast from "../../../../../components/toast/CustomErrorToast.jsx";
 
 const service=new ContentService();
 
@@ -51,7 +52,7 @@ const ContentMeta = (props) => {
   });
 
   const catchError = useCallback((error) => {
-    toast.error(error.message);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>);
   }, [toast]);
 
   const getData = useCallback((id) => {
@@ -169,7 +170,7 @@ const ContentMeta = (props) => {
           >
             <p className="text-lg font-semibold text-gray-800 dark:text-white">{item.name}</p>
             <button
-              className="ml-3 flex items-center justify-center rounded-md bg-red-500 px-3 py-2 text-white transition-all hover:bg-red-600 dark:bg-brand-400 dark:hover:bg-brand-300"
+              className="cursor-pointer ml-3 flex items-center justify-center rounded-md bg-red-500 px-3 py-2 text-white transition-all hover:bg-red-600 dark:bg-brand-400 dark:hover:bg-brand-300"
               onClick={() => handleUnSelect(item)}
             >
               <FaTrash size={20} />
@@ -297,7 +298,7 @@ const ContentMeta = (props) => {
               <div className="ml-2 mt-2 text-red-500">{formik.errors.slug}</div>
             )}
           </div>
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 max-w-[200px]">
             <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
               {t("type")}
             </label>
@@ -321,7 +322,7 @@ const ContentMeta = (props) => {
               <div className="ml-2 mt-2 text-red-500">{formik.errors.type}</div>
             )}
           </div>
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 max-w-fit">
             <InputField
               label={t("episodeTime")}
               placeholder={t("episodeTime")}

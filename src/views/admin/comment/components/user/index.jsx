@@ -12,7 +12,7 @@ const UserBanner = (props) => {
     const profileImageUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${capitalizeFirstLetter(data?.firstName)}`;
 
     return (
-        <Card extra={"items-center w-full h-full p-[16px] bg-cover"}>
+        <Card extra={"items-center w-full h-fit p-[16px] bg-cover"}>
             {/* Background and profile */}
             <div
                 className="relative mt-1 flex h-32 w-full justify-center rounded-xl bg-cover"
