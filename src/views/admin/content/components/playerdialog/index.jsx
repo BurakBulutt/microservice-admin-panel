@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useToast } from "../../../../../utilities/toast/toast.js";
 import { MediaService } from "../../../../../services/MediaService.js";
 import CustomErrorToast from "../../../../../components/toast/CustomErrorToast.jsx";
-import ReactPlayer from "react-player";
 
 const service = new MediaService();
 
@@ -145,11 +144,13 @@ const PlayerDialog = ({ mediaId }) => {
             </div>
             <div className="mb-4 p-4">
               <p className="mb-2 text-sm text-gray-700">{t("chosen")}</p>
-              <ReactPlayer
-                  url={filteredMedia?.url}
-                  controls
+              <iframe
+                  className="w-full h-full min-h-[50vh]"
+                  src={filteredMedia?.url}
                   width="100%"
-                  height="50vh"
+                  height="100%"
+                  allow="autoplay"
+                  allowFullScreen
               />
             </div>
             <div className="flex justify-center">

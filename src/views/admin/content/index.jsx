@@ -14,8 +14,6 @@ import DefaultTable from "../../../components/table/DefaultTable.jsx";
 import {contentsColumnsData} from "../../../components/table/columnsData.js";
 import Paginator from "../../../components/table/Paginator.jsx";
 import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
-import {FaTurkishLiraSign} from "react-icons/fa6";
-
 
 const service = new ContentService();
 
@@ -94,9 +92,6 @@ const Content = (props) => {
     const handleDelete = (id) => {
         deleteContent(id);
     };
-    const handleAddLike = (id) => {
-        //TODO
-    };
 
     const handleSelect = useCallback((e, items) => {
         if (e.target.checked) {
@@ -172,12 +167,6 @@ const Content = (props) => {
                         icon={<FaEdit size={24}/>}
                         color={"blue"}
                         label={t("update")}
-                    />
-                    <ActionButton
-                        onClick={() => handleAddLike(data.id)}
-                        icon={<FaPlus size={24}/>}
-                        color={"green"}
-                        label={t("addLike")}
                     />
                     <ActionButton
                         onClick={() => handleDelete(data.id)}

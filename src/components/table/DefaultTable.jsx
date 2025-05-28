@@ -112,7 +112,7 @@ const DefaultTable = ({
 
                 case "enum":
                     return (
-                        <p className="text-sm font-bold text-navy-700 dark:text-white">
+                        <p className="text-sm text-start font-bold text-navy-700 dark:text-white">
                             {displayEnumVal(value, col.enumType)}
                         </p>
                     );
@@ -133,7 +133,7 @@ const DefaultTable = ({
 
                 default:
                     return (
-                        <p className="text-sm font-bold text-navy-700 dark:text-white">
+                        <p className="text-sm text-start font-bold text-navy-700 dark:text-white">
                             {value}
                         </p>
                     );

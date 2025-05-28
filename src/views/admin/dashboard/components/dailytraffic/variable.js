@@ -1,6 +1,6 @@
 export const sampleDailyTrafficResponse = {
-    totalVisitors: 2588,
-    increaseRate: 36,
+    totalVisitors: 278,
+    increaseRate: 1,
     data: [20, 30, 40, 93, 45, 50],
 }
 

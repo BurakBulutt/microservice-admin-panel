@@ -171,9 +171,6 @@ const Comment = (props) => {
   const handleDelete = (id) => {
     deleteItem(id);
   };
-  const handleAddLike = (id) => {
-    //TODO
-  };
 
   const handleSelect = useCallback((e, items) => {
     if (e.target.checked) {
@@ -203,8 +200,12 @@ const Comment = (props) => {
   const onSortChange = useCallback((sorting) => {
     if (!sorting) return;
 
-    const label = sorting.id;
+    let label = sorting.id;
     const direction = sorting.desc ? "desc" : "asc";
+
+    if (label === "user") {
+      label = "userId";
+    }
 
     const sort = `${label},${direction}`;
 
@@ -243,12 +244,6 @@ const Comment = (props) => {
             icon={<FaEdit size={24} />}
             color={"blue"}
             label={t("update")}
-          />
-          <ActionButton
-              onClick={() => handleAddLike(data.id)}
-              icon={<FaPlus size={24} />}
-              color={"green"}
-              label={t("addLike")}
           />
           <ActionButton
             onClick={() => handleDelete(data.id)}

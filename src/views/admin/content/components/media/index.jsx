@@ -168,9 +168,6 @@ const Media = (props) => {
   const handleDelete = (id) => {
     deleteItem(id);
   };
-  const handleAddLike = (id) => {
-    //TODO
-  };
 
   const handleSelect = useCallback((e, items) => {
     if (e.target.checked) {
@@ -246,12 +243,6 @@ const Media = (props) => {
             icon={<FaEdit size={24} />}
             color={"blue"}
             label={t("update")}
-          />
-          <ActionButton
-              onClick={() => handleAddLike(data.id)}
-              icon={<FaPlus size={24} />}
-              color={"green"}
-              label={t("addLike")}
           />
           <ActionButton
             onClick={() => handleDelete(data.id)}

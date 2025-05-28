@@ -170,7 +170,7 @@ const ProfileSettings = () => {
                                     {t("profileSettings.accountType") + ":"}
                                 </p>
                                 {" "}
-                                <p className="text-sm font-bold text-navy-900">
+                                <p className="text-sm font-bold text-navy-900 dark:text-white">
                                     {t("profileSettings.admin")}
                                 </p>
                             </div>
@@ -178,7 +178,7 @@ const ProfileSettings = () => {
                     </Card>
                     <Card extra={"w-full h-fit p-[16px] bg-cover xl:min-w-[60vh]"}>
                         <div className="flex flex-col justify-start pl-3 pt-1">
-                            <p className="text-xl font-bold text-navy-800">
+                            <p className="text-xl font-bold text-navy-800 dark:text-white">
                                 {t("profileSettings.accountSettings.title")}
                             </p>
                             <p className="text-base font-normal text-gray-600">
@@ -252,7 +252,7 @@ const ProfileSettings = () => {
                     </Card>
                     <Card extra={"w-full h-fit p-[16px] bg-cover xl:min-w-[60vh]"}>
                         <div className="flex flex-col justify-start pl-3 pt-1">
-                            <p className="text-xl font-bold text-navy-800">{t("profileSettings.socialProfiles.title")}</p>
+                            <p className="text-xl font-bold text-navy-800 dark:text-white">{t("profileSettings.socialProfiles.title")}</p>
                             <p className="text-base font-normal text-gray-600">
                                 {t("profileSettings.socialProfiles.description")}
                             </p>
@@ -292,7 +292,7 @@ const ProfileSettings = () => {
                     </Card>
                     <Card extra={"w-full h-fit p-[16px] bg-cover xl:min-w-[60vh]"}>
                         <div className="flex flex-col justify-start pl-3 pt-1">
-                            <p className="text-xl font-bold text-navy-800">{t("profileSettings.changePassword.title")}</p>
+                            <p className="text-xl font-bold text-navy-800 dark:text-white">{t("profileSettings.changePassword.title")}</p>
                             <p className="text-base font-normal text-gray-600">
                                 {t("profileSettings.changePassword.description")}
                             </p>
