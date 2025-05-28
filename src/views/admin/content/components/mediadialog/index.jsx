@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import React from "react";
 import InputField from "../../../../../components/fields/InputField";
 import {useTranslation} from "react-i18next";
+import TextField from "../../../../../components/fields/TextField.jsx";
 
 const MediaDialog = (props) => {
     const {formik,dialogVisible,hideDialog,handleSubmitFormik} = props;
@@ -22,16 +23,14 @@ const MediaDialog = (props) => {
                         {formik.values?.id ? t("update") : t("create")}
                     </Dialog.Title>
                     <div className="mb-4">
-                        <InputField
+                        <TextField
+                            id="description"
+                            state={formik.errors.description && "error"}
                             label={t("description")}
                             placeholder={t("description")}
-                            name="description"
-                            type="text"
-                            state={formik.errors?.description &&  "error"}
-                            value={formik.values?.description}
-                            onChange={(e) => {
-                                formik.handleChange(e);
-                            }}
+                            rows="5"
+                            value={formik.values.description}
+                            onChange={formik.handleChange}
                         />
                         {formik.errors.description &&  (
                             <div className="ml-2 mt-2 text-red-500">{formik.errors.description}</div>

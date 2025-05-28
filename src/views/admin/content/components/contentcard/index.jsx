@@ -1,13 +1,11 @@
 import Card from "../../../../../components/card";
-import {useParams} from "react-router-dom";
 import React, {useState} from "react";
 
 import Media from "../media";
 import ContentMeta from "../contentmeta";
 import {useTranslation} from "react-i18next";
 
-const ContentCard = () => {
-  const {id} = useParams();
+const ContentCard = ({id}) => {
   const {t} = useTranslation();
   const [activeTab, setActiveTab] = useState("content-meta");
   const tabs = [
@@ -40,12 +38,12 @@ const ContentCard = () => {
         ))}
       </div>
       {/* Content */}
-      <div className="mt-4 mb-4">
+      <div key={id} className="mt-4 mb-4">
         <div style={{ display: activeTab === "content-meta" ? 'block' : 'none' }}>
-          <ContentMeta contentId={id} />
+          <ContentMeta id={id}/>
         </div>
         <div style={{ display: activeTab === "media-list" ? 'block' : 'none' }}>
-          <Media contentId={id} />
+          <Media contentId={id}/>
         </div>
       </div>
     </Card>

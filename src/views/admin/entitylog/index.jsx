@@ -55,7 +55,7 @@ const EntityLog = () => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
@@ -156,28 +156,7 @@ const EntityLog = () => {
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-6"}>
-      <div className="p-4 flex flex-row justify-between items-start gap-2">
-        <div className="flex-1 min-w-[200px]">
-          <div className="mt-8 flex flex-row gap-3 justify-start items-center">
-            <SearchBox onKeyDown={searchKeyDown} />
-            <div className="flex flex-col justify-between items-center">
-              <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
-                {t("entity")}
-              </label>
-              <Checkbox
-                checked={true}
-              />
-            </div>
-            <div className="flex flex-col justify-between items-center">
-              <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
-                {t("user")}
-              </label>
-              <Checkbox
-                checked={true}
-              />
-            </div>
-          </div>
-        </div>
+      <div className="max-w-fit p-4 flex flex-row justify-between items-start gap-2">
         <div className="flex-1 min-w-[200px]">
           <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
             {t("service")}

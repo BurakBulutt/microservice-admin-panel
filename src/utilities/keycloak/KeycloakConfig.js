@@ -11,5 +11,8 @@ export const kcInitOptions = {
     onLoad: "check-sso",
     enableTokenRefresh: true,
     checkLoginIframe: true,
-    silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`
+    checkLoginIframeInterval: 5,
+    silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+    enableLogging: true,
+    timeSkew: 30
 };

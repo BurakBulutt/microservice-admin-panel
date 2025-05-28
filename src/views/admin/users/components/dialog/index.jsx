@@ -108,7 +108,7 @@ const UserDialog = (props) => {
                     <div className="text-red-500">{formik.errors.passwordRe}</div>
                 )}
               </div>
-              <div className="mb-4">
+              <div className="mb-4 ml-2">
                 <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("passwordTemporary")}</label>
                 <Switch
                   id="isPasswordTemporary"

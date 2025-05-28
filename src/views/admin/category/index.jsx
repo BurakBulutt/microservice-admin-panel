@@ -40,7 +40,8 @@ const Category = (props) => {
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    sort: "created,desc"
+    sort: "created,desc",
+    query: null
   });
 
   const baseItem = {
@@ -65,22 +66,23 @@ const Category = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
 
   const getItems = useCallback(() => {
-    service
-      .filter(requestParams)
-      .then((response) => {
-        if (response.status === 200) {
-          setItems(response.data);
-        }
-      })
-      .catch((error) => {
-        catchError(error, {});
-      });
+      service
+          .filter(requestParams)
+          .then((response) => {
+            if (response.status === 200) {
+              setItems(response.data);
+            }
+          })
+          .catch((error) => {
+            catchError(error, {});
+          });
+
   }, [requestParams, catchError]);
 
   const createItem = (request) => {
@@ -197,7 +199,10 @@ const Category = (props) => {
   const searchKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-      console.log("Searching category:", value);
+      setRequestParams((prevState) => ({
+        ...prevState,
+        query: value.length ? value : null
+      }));
     }
   }, []);
 

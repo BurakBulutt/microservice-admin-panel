@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useToast } from "../../../../../utilities/toast/toast.js";
 import { MediaService } from "../../../../../services/MediaService.js";
 import CustomErrorToast from "../../../../../components/toast/CustomErrorToast.jsx";
+import ReactPlayer from "react-player";
 
 const service = new MediaService();
 
@@ -41,18 +42,7 @@ const PlayerDialog = ({ mediaId }) => {
         .getMediaSources(mediaId)
         .then((response) => {
           if (response.status === 200) {
-            const sources = response.data;
-            setMediaSourceList(sources);
-
-            const fanSubs = Array.from(
-              new Map(sources.map((s) => [s.fansub.name, s.fansub])).values()
-            );
-            setFanSubOptions(fanSubs);
-            setSelectedFanSub(fanSubs[0]?.name || "");
-
-            const types = Array.from(new Set(sources.map((s) => s.type)));
-            setTypeOptions(types);
-            setSelectedType(types[0] || "");
+            setMediaSourceList(response.data);
           }
         })
         .catch(catchError);
@@ -64,6 +54,20 @@ const PlayerDialog = ({ mediaId }) => {
   }, [getMediaSources]);
 
   useEffect(() => {
+    if (mediaSourceList.length) {
+      const fanSubs = Array.from(
+          new Map(mediaSourceList.map((s) => [s.fansub.name, s.fansub])).values()
+      );
+      setFanSubOptions(fanSubs);
+      setSelectedFanSub(fanSubs[0]?.name || "");
+
+      const types = Array.from(new Set(mediaSourceList.map((s) => s.type)));
+      setTypeOptions(types);
+      setSelectedType(types[0] || "");
+    }
+  }, [mediaSourceList]);
+
+  useEffect(() => {
     if (selectedFanSub) {
       const filteredSources = mediaSourceList.filter(
         (s) => s.fansub.name === selectedFanSub
@@ -72,7 +76,7 @@ const PlayerDialog = ({ mediaId }) => {
       setTypeOptions(types);
       setSelectedType(types[0] || "");
     }
-  }, [selectedFanSub, mediaSourceList]);
+  }, [selectedFanSub,mediaSourceList]);
 
   useEffect(() => {
     if (selectedFanSub && selectedType) {
@@ -141,12 +145,11 @@ const PlayerDialog = ({ mediaId }) => {
             </div>
             <div className="mb-4 p-4">
               <p className="mb-2 text-sm text-gray-700">{t("chosen")}</p>
-              <iframe
-                className="w-full h-full min-h-[50vh]"
-                src={filteredMedia?.url || ""}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
+              <ReactPlayer
+                  url={filteredMedia?.url}
+                  controls
+                  width="100%"
+                  height="50vh"
               />
             </div>
             <div className="flex justify-center">

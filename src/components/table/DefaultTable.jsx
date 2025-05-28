@@ -49,7 +49,7 @@ const DefaultTable = ({
         (col, value, info) => {
             switch (col.type) {
                 case "boolean":
-                    const textColor = value
+                    { const textColor = value
                         ? "bg-green-500 dark:bg-green-400"
                         : "bg-red-500 dark:bg-red-400";
                     const icon = value ? (
@@ -66,19 +66,19 @@ const DefaultTable = ({
                             </div>
                             {t(value ? col.booleanTrue : col.booleanFalse)}
                         </div>
-                    );
+                    ); }
 
                 case "date":
-                    const date = new Date(value);
+                    { const date = new Date(value);
                     const formattedDate = date.toLocaleDateString("en-CA");
                     return (
                         <p className="text-sm font-bold text-navy-700 dark:text-white">
                             {formattedDate}
                         </p>
-                    );
+                    ); }
 
                 case "image":
-                    const imageSrc = value?.trim();
+                    { const imageSrc = value?.trim();
                     return (
                         <div className="ml-3">
                             <img
@@ -98,7 +98,7 @@ const DefaultTable = ({
                                 />
                             )}
                         </div>
-                    );
+                    ); }
 
                 case "modal":
                     return (
@@ -139,7 +139,7 @@ const DefaultTable = ({
                     );
             }
         },
-        [openPhotoId]
+        [displayEnumVal, modalComponent, openPhotoId, t]
     );
     const createColumns = useMemo(() => {
         return [
@@ -202,8 +202,8 @@ const DefaultTable = ({
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        manualSorting:true,
-        debugTable: true,
+        manualSorting: true,
+        debugTable: false,
     });
 
     const isChecked = useCallback(() => {
@@ -216,7 +216,7 @@ const DefaultTable = ({
             const sort = sorting.length ? sorting[0] : defaultSorting;
             onSortChange(sort);
         }
-    }, [sorting,onSortChange]);
+    }, [sorting, onSortChange, defaultSorting]);
 
     return (
         <div className="mt-2 overflow-x-auto">

@@ -148,7 +148,7 @@
     },
     "changePassword": {
       "title": "Change Password",
-      "description": "Here you can set your new password",
+      "description": "Here you can set your new password. Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 symbol",
       "newPassword": "New Password",
       "newPasswordAgain": "Confirm New Password"
     },

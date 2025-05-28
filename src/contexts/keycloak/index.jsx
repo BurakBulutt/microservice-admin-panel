@@ -2,36 +2,45 @@ import {useEffect, useState} from "react";
 
 import {kcInitOptions, keycloak} from "../../utilities/keycloak/KeycloakConfig.js";
 import {KeycloakContext} from "./KeycloakContext.jsx";
+import i18next from "i18next";
 
 export const KeycloakContextProvider = ({children}) => {
-    const initOptions = kcInitOptions;
-
     const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
         if (!keycloak.didInitialize) {
-            keycloak.init(initOptions).then((resolve) => {
-                console.log("Keycloak initialize status: ", resolve);
-
-                keycloak.onTokenExpired = () => {
-                    keycloak.updateToken(30).then((result) => {
-                        console.log("Token Refresh Status:",result);
-                    }).catch((error) => {
-                        console.log("Token Refresh Error:",error);
-                        keycloak.login({locale: "tr"});
-                    });
-                } //TODO Çalışmıyor sebebi öğrenilecek.
-
+            keycloak.init(kcInitOptions).then((status) => {
+                if (status) {
+                    keycloak.onTokenExpired = onTokenExpired;
+                    keycloak.onAuthRefreshError = () => {
+                        keycloak.login({locale: i18next.language})
+                    };
+                    keycloak.onAuthLogout = () => {
+                        keycloak.login({locale: i18next.language})
+                    };
+                }else {
+                    keycloak.login({locale: i18next.language});
+                    return;
+                }
                 setInitialized(true);
             }).catch((error) => {
-                console.log("Keycloak initialize error: ", error);
                 setInitialized(false);
+                throw new Error(error);
             });
         }
-    }, [initOptions]);
+    }, []);
 
-    return (
-        <KeycloakContext.Provider value={{kc: keycloak, isInitialized: initialized}}>
+    const onTokenExpired =  () => {
+         keycloak.updateToken(-1).then((status) => {
+            console.log("Token refresh status: ", status);
+        }).catch((error) => {
+            console.error("Token refresh request failed: ", error);
+            keycloak.login({locale: i18next.language});
+        });
+    };
+
+    return initialized && (
+        <KeycloakContext.Provider value={{kc: keycloak}}>
             {children}
         </KeycloakContext.Provider>
     );

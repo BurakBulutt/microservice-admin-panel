@@ -1,3 +1,3 @@
 import {createContext} from "react";
 
-export const KeycloakContext = createContext({kc: null, isInitialized: false});
+export const KeycloakContext = createContext({kc: null});

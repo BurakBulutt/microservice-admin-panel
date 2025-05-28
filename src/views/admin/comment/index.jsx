@@ -77,7 +77,7 @@ const Comment = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );

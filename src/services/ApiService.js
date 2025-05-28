@@ -1,7 +1,6 @@
 import axios from "axios";
 import {keycloak} from "../utilities/keycloak/KeycloakConfig.js";
 
-
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
     headers: {
@@ -10,7 +9,12 @@ const axiosInstance = axios.create({
 });
 
 const createRequest = async (uri, method, data, params) => {
-    const token = keycloak.authenticated ? keycloak.token : undefined;
+
+    if (keycloak.isTokenExpired(-1)) {
+        await keycloak.updateToken(-1);
+    }
+
+    const token = keycloak.token;
 
     const config = {
         method,
@@ -31,11 +35,6 @@ const createRequest = async (uri, method, data, params) => {
         return await axiosInstance(config);
     } catch (error) {
         console.error(error);
-
-        if (error.status === 401) {
-            keycloak.login({redirectUri: window.location.origin,locale: "tr"});
-        }
-
         throw error;
     }
 };

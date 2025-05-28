@@ -8,6 +8,10 @@ export class XmlDefinitionService {
     return  createRequest(defaultUrl, "GET", null, params);
   }
 
+  async filter(params) {
+    return  createRequest(defaultUrl + `/filter`, "GET", null, params);
+  }
+
   async startJob(id) {
     return  createRequest(defaultUrl + `/${id}/start-job`, "GET", null, null);
   }

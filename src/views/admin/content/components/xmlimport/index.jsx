@@ -48,7 +48,7 @@ const XmlImportDialog = ({ type }) => {
       toast.error(
         <CustomErrorToast
           title={error.message}
-          message={error.response?.data?.message}
+          message={error.response?.data}
         />,
         options
       );

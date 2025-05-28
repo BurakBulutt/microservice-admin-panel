@@ -6,10 +6,10 @@ import { MediaService } from "../../../../../services/MediaService.js";
 import { FaEye, FaPlus, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useToast } from "../../../../../utilities/toast/toast";
-import Selectdialog from "../../../../../components/selectdialog/index.jsx";
-import Users from "../../../users/index.jsx";
+import SelectDialog from "../../../../../components/selectdialog/index.jsx";
 import Fansub from "../../../fansub/index.jsx";
 import CustomErrorToast from "../../../../../components/toast/CustomErrorToast.jsx";
+import {UpdateMediaSourceValidationSchema} from "../../../../../utilities/validation/ValidationSchemas.js";
 
 const service = new MediaService();
 
@@ -25,7 +25,8 @@ const MediaSourceDialog = ({ mediaId }) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const formik = useFormik({
-    initialValues: { mediaSources: [] },
+    initialValues: { mediaSourceRequestList: [] },
+    validationSchema: UpdateMediaSourceValidationSchema,
     validateOnChange: false,
     validateOnBlur: false,
     validateOnMounted: false,
@@ -36,7 +37,7 @@ const MediaSourceDialog = ({ mediaId }) => {
 
   const catchError = useCallback(
     (error,options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
@@ -80,7 +81,7 @@ const MediaSourceDialog = ({ mediaId }) => {
   ];
 
   const handleSubmitFormik = () => {
-    formik.setFieldValue("mediaSources", mediaSources);
+    formik.setFieldValue("mediaSourceRequestList", mediaSources);
     formik.handleSubmit();
   };
 
@@ -152,7 +153,10 @@ const MediaSourceDialog = ({ mediaId }) => {
   );
 
   useEffect(() => {
-    if (isOpen) getMediaSources();
+    if (isOpen) {
+      getMediaSources();
+      setSelectedItem(null);
+    }
   }, [getMediaSources, isOpen]);
 
   return (
@@ -216,7 +220,7 @@ const MediaSourceDialog = ({ mediaId }) => {
                   <div className="flex flex-row">
                     <div className="w-fit">
                       <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white"></label>
-                      <Selectdialog
+                      <SelectDialog
                         extra="mt-2 w-fit rounded-tl-2xl rounded-bl-2xl bg-gradient-to-br from-[#EA52F8] to-[#0066FF] px-5 py-3 text-base font-medium text-white transition duration-200 hover:shadow-lg hover:shadow-[#0066FF]/25"
                         buttonText={<FaPlus size={24} />}
                         component={
@@ -225,6 +229,7 @@ const MediaSourceDialog = ({ mediaId }) => {
                             actionButtons={(data) => actionButtons(data)}
                           />
                         }
+                        onOpen={() => setSelectedItem(mediaSource.fansub)}
                         onSave={() => onSave(index)}
                         onClose={() => onDiscard(mediaSource.fansub)}
                       />
@@ -240,7 +245,7 @@ const MediaSourceDialog = ({ mediaId }) => {
                         type="text"
                         placeholder={t("fansub")}
                         disabled={true}
-                        value={mediaSource.fansub.name}
+                        value={mediaSource.fansub?.name}
                       />
                     </div>
                   </div>
@@ -252,6 +257,9 @@ const MediaSourceDialog = ({ mediaId }) => {
                 >
                   <FaTrash size={24} />
                 </button>
+                {formik.errors.mediaSourceRequestList &&  (
+                    <div className="ml-2 mt-2 text-red-500">{formik.errors.mediaSourceRequestList}</div>
+                )}
               </div>
             ))}
             <button

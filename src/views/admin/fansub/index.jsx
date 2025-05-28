@@ -39,7 +39,8 @@ const Fansub = (props) => {
   const [requestParams, setRequestParams] = useState({
     page: 0,
     size: 10,
-    sort: "created,desc"
+    sort: "created,desc",
+    query: null
   });
 
   const baseItem = {
@@ -63,7 +64,7 @@ const Fansub = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
@@ -195,7 +196,10 @@ const Fansub = (props) => {
   const searchKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-      console.log("Searching fansub:", value);
+      setRequestParams((prevState) => ({
+        ...prevState,
+        query: value.length ? value : null
+      }));
     }
   }, []);
 

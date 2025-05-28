@@ -4,7 +4,6 @@ import Users from "../../views/admin/users/index.jsx";
 import { BiCategory, BiComment, BiUser } from "react-icons/bi";
 import Category from "../../views/admin/category/index.jsx";
 import { SiContentful } from "react-icons/si";
-import ContentCard from "../../views/admin/content/components/contentcard/index.jsx";
 import Content from "../../views/admin/content/index.jsx";
 import Comment from "../../views/admin/comment/index.jsx";
 import XmlDefinition from "../../views/admin/xmldefination/index.jsx";
@@ -13,6 +12,8 @@ import EntityLog from "../../views/admin/entitylog/index.jsx";
 import ProfileSettings from "../../views/admin/profile/index.jsx";
 import Fansub from "../../views/admin/fansub/index.jsx";
 import {FaClosedCaptioning} from "react-icons/fa";
+import CreateContent from "../../views/admin/content/components/createcontent/index.jsx";
+import UpdateContent from "../../views/admin/content/components/updatecontent/index.jsx";
 
 export const ROUTES = [
   {
@@ -40,6 +41,14 @@ export const ROUTES = [
     component: <Category />,
   },
   {
+    name: "fansub",
+    layout: "/admin",
+    path: "fansub",
+    icon: <FaClosedCaptioning className="h-6 w-6" />,
+    sideBarVisible: true,
+    component: <Fansub />,
+  },
+  {
     name: "content",
     layout: "/admin",
     path: "contents",
@@ -52,16 +61,14 @@ export const ROUTES = [
     layout: "/admin",
     parentPath: "contents",
     path: "create",
-    sideBarVisible: false,
-    component: <ContentCard />,
+    component: <CreateContent />,
   },
   {
     name: "updateContent",
     layout: "/admin",
     parentPath: "contents",
     path: "update/:id",
-    sideBarVisible: false,
-    component: <ContentCard />,
+    component: <UpdateContent />,
   },
   {
     name: "comment",
@@ -91,15 +98,6 @@ export const ROUTES = [
     name: "profileSettings.title",
     layout: "/admin",
     path: "profile",
-    sideBarVisible: false,
     component: <ProfileSettings />,
-  },
-  {
-    name: "fansub",
-    layout: "/admin",
-    path: "fansub",
-    icon: <FaClosedCaptioning className="h-6 w-6" />,
-    sideBarVisible: true,
-    component: <Fansub />,
-  },
+  }
 ];

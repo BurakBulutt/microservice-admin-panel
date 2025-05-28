@@ -48,7 +48,8 @@ const Media = (props) => {
     page: 0,
     size: 10,
     sort:"count,asc",
-    content: contentId
+    content: contentId,
+    query: null
   });
 
   const baseItem = {
@@ -77,7 +78,7 @@ const Media = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
@@ -215,7 +216,10 @@ const Media = (props) => {
   const searchKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-      console.log("Searching media:", value);
+      setRequestParams((prevState) => ({
+        ...prevState,
+        query: value.length ? value : null
+      }));
     }
   }, []);
 

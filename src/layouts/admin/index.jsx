@@ -18,28 +18,8 @@ export const AdminLayout = (props) => {
   const [open, setOpen] = useState(true);
   const [currentRoute, setCurrentRoute] = useState(routeList[0]);
   const [locale, setLocale] = useState(i18n.language);
+  const { kc } = useContext(KeycloakContext);
 
-  const { kc, isInitialized } = useContext(KeycloakContext);
-
-  useEffect(() => {
-    window.addEventListener("resize", () =>
-      window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
-    );
-  }, []);
-
-  useEffect(() => {
-    setCurrentRoute(getActiveRoute(routeList));
-  }, [location.pathname]);
-
-  useEffect(() => {
-    i18n.changeLanguage(locale);
-  }, [locale]);
-
-  useEffect(() => {
-    if (isInitialized && !kc.authenticated) {
-      kc.login({ locale: "tr" });
-    }
-  }, [kc.authenticated, isInitialized]);
 
   const getRoutes = (routes) => {
     return routes
@@ -81,9 +61,23 @@ export const AdminLayout = (props) => {
     return route.path;
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", () =>
+        window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
+    );
+  }, []);
+
+  useEffect(() => {
+    setCurrentRoute(getActiveRoute(routeList));
+  }, [location.pathname]);
+
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [locale]);
+
   document.documentElement.dir = "ltr";
 
-  return isInitialized && (
+  return (
     <div className="flex h-full w-full">
       <Sidebar open={open} onClose={() => setOpen(false)} />
       {/* Navbar & Main Content */}
@@ -110,10 +104,7 @@ export const AdminLayout = (props) => {
                   path="/"
                   element={<Navigate to="/admin/dashboard" replace />}
                 />
-                <Route
-                  path="*"
-                  element={<div className="mt-4">404 NOT FOUND</div>}
-                />
+                <Route path="*" element={<div>404</div>}/>
               </Routes>
             </div>
             {/* Footer */}

@@ -42,12 +42,12 @@ const Content = (props) => {
         page: 0,
         size: 10,
         sort: "created,desc",
-        category: null
+        query: null
     });
 
     const catchError = useCallback(
         (error, options) => {
-            toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+            toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
         },
         [toast]
     );
@@ -63,6 +63,7 @@ const Content = (props) => {
             .catch((error) => {
                 catchError(error, {});
             });
+
     }, [requestParams, catchError]);
 
     const deleteContent = (id) => {
@@ -141,7 +142,10 @@ const Content = (props) => {
     const searchKeyDown = useCallback((e) => {
         if (e.key === "Enter") {
             const value = e.target.value.trim();
-            console.log("Searching content:", value);
+            setRequestParams((prevState) => ({
+                ...prevState,
+                query: value.length ? value : null
+            }));
         }
     }, []);
 

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {Dialog} from "@headlessui/react";
 import {useTranslation} from "react-i18next";
@@ -15,6 +15,12 @@ const SelectDialog=(props) => {
         onClose();
         props.onClose();
     }
+
+    useEffect(() => {
+        if (isOpen && props.onOpen) {
+            props.onOpen();
+        }
+    }, [isOpen]);
 
     return (
       <div>

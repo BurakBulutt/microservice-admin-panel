@@ -61,7 +61,7 @@ const Users = (props) => {
     enabled: false,
     emailVerified: false,
     requiredActions: [],
-    birthdate: "",
+    birthdate: null,
   };
   const formik = useFormik({
     initialValues: baseRequest,
@@ -81,7 +81,7 @@ const Users = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );

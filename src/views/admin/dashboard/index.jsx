@@ -40,7 +40,7 @@ const Dashboard = () => {
       toast.error(
         <CustomErrorToast
           title={error.message}
-          message={error.response?.data?.message}
+          message={error.response?.data}
         />,
         options
       );
@@ -59,7 +59,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   useEffect(() => {
     contentService
@@ -72,7 +72,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   useEffect(() => {
     contentService
@@ -85,7 +85,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   useEffect(() => {
     userService
@@ -98,7 +98,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   useEffect(() => {
     categoryService
@@ -111,7 +111,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   useEffect(() => {
     mediaService
@@ -124,7 +124,7 @@ const Dashboard = () => {
       .catch((error) => {
         catchError(error);
       });
-  }, []);
+  }, [catchError]);
 
   return (
     <div>

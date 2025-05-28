@@ -161,20 +161,6 @@ const CommentDialog = (props) => {
               </div>
               {formik.values.type === "COMMENT" && (
                   <div className="mb-4 flex flex-col justify-between gap-2">
-                    <InputField
-                        disabled={true}
-                        label={t("target")}
-                        placeholder={t("target")}
-                        name="targetId"
-                        type="text"
-                        state={formik.errors.targetId && "error"}
-                        value={formik.values.targetId ? formik.values.targetId : ""}
-                    />
-                    {formik.errors.targetId && (
-                        <div className="ml-2 mt-2 text-red-500">
-                          {formik.errors.targetId}
-                        </div>
-                    )}
                     <div>
                       <label className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
                         {t("targetType")}
@@ -199,6 +185,20 @@ const CommentDialog = (props) => {
                         ))}
                       </select>
                     </div>
+                    <InputField
+                        disabled={true}
+                        label={t("target")}
+                        placeholder={t("target")}
+                        name="targetId"
+                        type="text"
+                        state={formik.errors.targetId && "error"}
+                        value={formik.values.targetId ? formik.values.targetId : ""}
+                    />
+                    {formik.errors.targetId && (
+                        <div className="ml-2 mt-2 text-red-500">
+                          {formik.errors.targetId}
+                        </div>
+                    )}
                     <div className="flex flex-row justify-between gap-2">
                       <div className="flex-1">
                         <Selectdialog

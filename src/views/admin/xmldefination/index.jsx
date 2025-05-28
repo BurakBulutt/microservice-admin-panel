@@ -42,6 +42,7 @@ const XmlDefinition = (props) => {
     page: 0,
     size: 10,
     sort: "created,desc",
+    query:null
   });
 
   const baseItem = {
@@ -61,14 +62,14 @@ const XmlDefinition = (props) => {
 
   const catchError = useCallback(
     (error, options) => {
-      toast.error(<CustomErrorToast title={error.message} message={error.response?.data?.message}/>, options);
+      toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     },
     [toast]
   );
 
   const getItems = useCallback(() => {
     service
-      .getAll(requestParams)
+      .filter(requestParams)
       .then((response) => {
         if (response.status === 200) {
           setItems(response.data);
@@ -113,7 +114,9 @@ const XmlDefinition = (props) => {
       .startJob(id)
       .then((response) => {
         if (response.status === 200) {
-          toast.success(t("success"), {});
+          toast.success(t("success"), {
+            onClose: getItems,
+          });
         }
       })
       .catch((error) => {
@@ -185,6 +188,16 @@ const XmlDefinition = (props) => {
     }));
   }, [requestParams.sort]);
 
+  const searchKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      const value = e.target.value.trim();
+      setRequestParams((prevState) => ({
+        ...prevState,
+        query: value.length ? value : null
+      }));
+    }
+  }, []);
+
   const actionButtons = useCallback(
     (data) => {
       return props.actionButtons ? (
@@ -245,6 +258,7 @@ const XmlDefinition = (props) => {
         onBulkDelete={() => console.log(selectedItems)}
         itemsLength={selectedItems.length}
         onCreate={handleCreate}
+        searchKeyDown={searchKeyDown}
       />
       <DefaultTable
         columnsData={xmlDefinitionColumnsData}

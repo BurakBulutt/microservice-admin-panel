@@ -18,5 +18,3 @@ i18n
             escapeValue: false,
         },
     });
-
-export default i18n;

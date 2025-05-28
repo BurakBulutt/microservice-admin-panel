@@ -11,6 +11,10 @@ export class CategoryService {
     return createRequest(defaultUrl + `/filter`, "GET", null, params);
   }
 
+  async searchFilter(params) {
+    return createRequest(defaultUrl + `/search-filter`, "GET", null, params);
+  }
+
   async create(request) {
     return createRequest(defaultUrl, "POST", request, null);
   }

@@ -11,6 +11,10 @@ export class ContentService {
     return createRequest(defaultUrl + `/filter`, "GET", null, params);
   }
 
+  async search(params) {
+    return createRequest(defaultUrl + `/search`, "GET", null, params);
+  }
+
   async getById(id) {
     return createRequest(defaultUrl + `/${id}`, "GET", null, null);
   }
