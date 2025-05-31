@@ -1,3 +1,5 @@
+import banner from "../../../../../assets/img/profile/banner2.jpg";
+
 import Card from "../../../../../components/card";
 import React, { useRef, useState } from "react";
 import { useToast } from "../../../../../utilities/toast/toast";
@@ -63,7 +65,7 @@ const TargetBanner = ({ data }) => {
         <div
           className="relative mt-2 flex h-[243px] w-full items-center justify-center rounded-2xl bg-no-repeat bg-cover"
           style={{
-            backgroundImage: `url(${getPhoto()})`,
+            backgroundImage: `url(${data ? getPhoto() : banner})`,
             backgroundPosition: `${bgPosition.x}% ${bgPosition.y}%`,
             cursor: isDragging.current ? "grabbing" : "grab",
           }}
@@ -75,7 +77,7 @@ const TargetBanner = ({ data }) => {
           <div className="absolute -bottom-12 flex h-[84px] w-[84px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400 dark:!border-navy-700">
             <img
               className="h-full w-full rounded-full object-cover"
-              src={getPhoto()}
+              src={data ? getPhoto() : banner}
               alt={data?.name}
               onClick={() => setLightBoxVisibility(true)}
             />
@@ -97,7 +99,7 @@ const TargetBanner = ({ data }) => {
       <Lightbox
         open={lightboxVisibility}
         close={() => setLightBoxVisibility(false)}
-        slides={[{ src: getPhoto(), caption: data?.name }]}
+        slides={[{ src: getPhoto() }]}
       />
     </div>
   );

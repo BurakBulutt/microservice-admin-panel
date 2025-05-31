@@ -103,7 +103,7 @@ const DefaultTable = ({
                 case "modal":
                     return (
                         <CustomModal
-                            title={t(col.accessor)}
+                            title={t(col.header || col.accessor)}
                             component={modalComponent(value, col.accessor)}
                             extra="linear rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white"
                             buttonText={t("show").toUpperCase()}
