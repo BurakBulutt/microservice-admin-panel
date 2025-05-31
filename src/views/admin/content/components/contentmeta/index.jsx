@@ -50,8 +50,8 @@ const ContentMeta = ({id}) => {
         },
     });
 
-    const catchError = useCallback((error,options) => {
-        toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>,options);
+    const catchError = useCallback((error, options) => {
+        toast.error(<CustomErrorToast title={error.message} message={error.response?.data}/>, options);
     }, [toast]);
 
     const getData = useCallback((id) => {
@@ -63,7 +63,7 @@ const ContentMeta = ({id}) => {
                 }
             })
             .catch((error) => {
-                catchError(error,{
+                catchError(error, {
                     onClose: () => navigate(-1, {replace: true})
                 });
             });
@@ -210,26 +210,26 @@ const ContentMeta = ({id}) => {
     };
 
     return (
-        <div className="w-full flex flex-col items-center gap-3">
+        <div className="h-full w-full flex flex-col items-center gap-4">
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 w-full h-full items-center p-2">
                 {/* Resim Alanı */}
                 <div
-                    className="flex h-48 w-full items-center justify-center overflow-hidden rounded-2xl border border-gray-300 shadow-md sm:h-64 sm:w-64 md:h-80 md:w-80 lg:h-96 lg:w-96 xl:w-[20rem]">
+                    className="flex items-center justify-center overflow-hidden rounded-2xl border border-gray-300 shadow-md sm:h-72 sm:w-72 md:h-96 md:w-96 lg:h-[26rem] lg:w-[26rem] xl:w-[22rem]">                    
                     {formik.values.photoUrl ? (
                         <img
                             src={formik.values.photoUrl}
                             alt="Seçili Fotoğraf"
-                            className="h-full w-full object-cover"
+                            className="w-full h-full object-cover"
                         />
                     ) : (
                         <span className="text-gray-500">{t("noPhoto")}</span>
                     )}
                 </div>
                 {/* Resim Butonları */}
-                <div className="flex flex-row space-x-2">
+                <div className="flex flex-row space-x-2 items-center justify-between w-full sm:w-72 md:w-96 lg:w-[26rem] xl:w-[22rem]">
                     <button
-                        className="cursor-pointer flex flex-1 items-center rounded-xl border-2 border-red-500 px-5 py-3 text-base font-medium text-red-500 transition duration-200 hover:bg-red-600/5 active:bg-red-700/5 dark:border-red-400 dark:bg-red-400/10 dark:text-white dark:hover:bg-red-300/10 dark:active:bg-red-200/10"
+                        className="cursor-pointer flex flex-1 rounded-xl border-2 border-red-500 px-5 py-3 text-base font-medium text-red-500 transition duration-200 hover:bg-red-600/5 active:bg-red-700/5 dark:border-red-400 dark:bg-red-400/10 dark:text-white dark:hover:bg-red-300/10 dark:active:bg-red-200/10"
                         onClick={() => {
                             formik.setFieldValue("photoUrl", null);
                         }}
@@ -238,13 +238,11 @@ const ContentMeta = ({id}) => {
                         <span className="ml-auto">{t("delete")}</span>
                     </button>
                     <button
-                        className="cursor-pointer flex flex-1 items-center rounded-xl border-2 border-green-500 px-5 py-3 text-base font-medium text-green-500 transition duration-200 hover:bg-green-600/5 active:bg-green-700/5 dark:border-green-400 dark:bg-green-400/10 dark:text-white dark:hover:bg-green-300/10 dark:active:bg-green-200/10"
+                        className="cursor-pointer flex flex-1 rounded-xl border-2 border-green-500 px-5 py-3 text-base font-medium text-green-500 transition duration-200 hover:bg-green-600/5 active:bg-green-700/5 dark:border-green-400 dark:bg-green-400/10 dark:text-white dark:hover:bg-green-300/10 dark:active:bg-green-200/10"
                         onClick={openModal}
                     >
                         <FaImage size={24} className="mr-2"/>
-                        <span className="ml-auto">
-              {!formik.values.photoUrl ? t("choose") : t("change")}
-            </span>
+                        <span className="ml-auto">{!formik.values.photoUrl ? t("choose") : t("change")}</span>
                     </button>
                 </div>
             </div>

@@ -21,6 +21,7 @@ import Header from "../../../components/header";
 import Paginator from "../../../components/table/Paginator";
 import Card from "../../../components/card/index.jsx";
 import CustomErrorToast from "../../../components/toast/CustomErrorToast.jsx";
+import TargetBanner from "./components/target/index.jsx";
 
 const service = new CommentService();
 
@@ -49,13 +50,14 @@ const Comment = (props) => {
     page: 0,
     size: 10,
     sort: "created,desc",
-    target: null
+    query: null
   });
 
   const baseItem = {
     content: "",
     userId: null,
     type: "COMMENT",
+    targetType: "CONTENT",
     targetId: null,
     parentId: null,
   };
@@ -221,7 +223,10 @@ const Comment = (props) => {
 
     if (e.key === "Enter") {
       const value = e.target.value.trim();
-      console.log("Searching comments:", value);
+      setRequestParams((prevState) => ({
+        ...prevState,
+        query: value.length ? value : null
+      }));
     }
   }, []);
 
@@ -267,6 +272,8 @@ const Comment = (props) => {
         );
       case "user":
         return <UserBanner data={data} />;
+      case "target":
+        return <TargetBanner data={data} />;
       case "parent":
         return data && <Reply data={Array(data)} />;
       case "commentList":

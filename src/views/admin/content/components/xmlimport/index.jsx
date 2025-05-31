@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaDochub } from "react-icons/fa";
 import { XmlDefinitionService } from "../../../../../services/XmlDefinitionService.js";
@@ -19,6 +19,7 @@ const XmlImportDialog = ({ type }) => {
   const onOpen = () => setIsOpen(true);
 
   const baseRequest = {
+    fileName: "",
     type: type,
     base64: null,
   };

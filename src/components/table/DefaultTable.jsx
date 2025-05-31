@@ -203,7 +203,7 @@ const DefaultTable = ({
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         manualSorting: true,
-        debugTable: false,
+        debugTable: true,
     });
 
     const isChecked = useCallback(() => {

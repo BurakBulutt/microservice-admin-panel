@@ -46,6 +46,7 @@ const XmlDefinition = (props) => {
   });
 
   const baseItem = {
+    fileName: "",
     type: "CONTENT",
     base64: null,
   };

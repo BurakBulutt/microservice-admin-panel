@@ -53,13 +53,10 @@ const Media = (props) => {
   });
 
   const baseItem = {
-    name: "",
     description: "",
-    count: null,
+    count: 0,
     publishDate: null,
-    contentId: "",
-    slug: "",
-    mediaSourceList: [],
+    contentId: contentId,
   };
   const formik = useFormik({
     initialValues: baseItem,

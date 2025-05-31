@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import TextField from "../../../../../components/fields/TextField";
 import { useTranslation } from "react-i18next";
@@ -109,6 +109,10 @@ const CommentDialog = (props) => {
     formik.setFieldValue(formikLabel, null);
     setSelected((prev) => ({ ...prev, [key]: null }));
   };
+
+  useEffect(() => {
+    formik.setFieldValue("targetType", targetComponent);
+  }, [targetComponent]);
 
   return (
     <Dialog

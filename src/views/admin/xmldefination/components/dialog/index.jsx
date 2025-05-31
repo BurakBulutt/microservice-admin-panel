@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { FaUpload } from "react-icons/fa";
 import {useToast} from "../../../../../utilities/toast/toast.js";
+import InputField from "../../../../../components/fields/InputField.jsx";
 
 const XmlDefinitionDialog = ({ formik, dialogVisible, handleSubmitFormik, hideDialog,type }) => {
   const { t } = useTranslation();
@@ -119,6 +120,17 @@ const XmlDefinitionDialog = ({ formik, dialogVisible, handleSubmitFormik, hideDi
                 )}
               </div>
           )}
+          <div className="mb-4">
+            <InputField
+                label={t("fileName")}
+                placeholder={t("fileName")}
+                name="fileName"
+                type="text"
+                state={formik.errors.fileName &&  "error"}
+                value={formik.values?.fileName}
+                onChange={formik.handleChange}
+            />
+          </div>
           <div
               className={`flex min-h-72 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center hover:border-brand-500 dark:border-white/10 dark:hover:border-brand-400 ${
                   dragging
