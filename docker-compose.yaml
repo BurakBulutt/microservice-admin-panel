@@ -1,0 +1,17 @@
+services:
+  app-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vite-admin
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    cpus: '1'
+    mem_limit: 128m
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true
+    name: app_network_default

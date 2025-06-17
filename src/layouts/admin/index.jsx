@@ -20,7 +20,6 @@ export const AdminLayout = (props) => {
   const [locale, setLocale] = useState(i18n.language);
   const { kc } = useContext(KeycloakContext);
 
-
   const getRoutes = (routes) => {
     return routes
       .filter((route) => route.layout === "/admin")

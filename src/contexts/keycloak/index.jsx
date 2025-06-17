@@ -22,6 +22,7 @@ export const KeycloakContextProvider = ({children}) => {
                     keycloak.login({locale: i18next.language});
                     return;
                 }
+                console.log("TOKEN", keycloak.token);
                 setInitialized(true);
             }).catch((error) => {
                 setInitialized(false);
