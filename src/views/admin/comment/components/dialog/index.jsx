@@ -251,6 +251,7 @@ const CommentDialog = (props) => {
                         buttonText={t("parent")}
                         component={
                           <Comment
+                              reply={true}
                             header={header("parent")}
                             actionButtons={(data) =>
                               actionButtons(data, "parent")

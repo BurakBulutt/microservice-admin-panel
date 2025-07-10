@@ -31,10 +31,10 @@ const Navbar = ({
 
     const localeOptions = [
         {
-            code: "tr-TR", label: t("turkish"), icon: <span className="text-lg">🇹🇷</span>,
+            code: "tr-TR", label: t("turkish"), icon: <span className="text-lg" translate="no">🇹🇷</span>,
         },
         {
-            code: "en-US", label: t("english"), icon: <span className="text-lg">🇺🇸</span>,
+            code: "en-US", label: t("english"), icon: <span className="text-lg" translate="no">🇺🇸</span>,
         }
     ];
 

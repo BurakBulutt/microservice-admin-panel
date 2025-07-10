@@ -1,17 +1,17 @@
-# Build aşaması (isteğe bağlı)
+# Build stage
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
 RUN yarn run build
 
-FROM nginx:alpine
+FROM nginx:latest
 
 COPY --from=build /app/dist /usr/share/nginx/html
 

@@ -7,6 +7,10 @@ export class CommentService {
     return createRequest(defaultUrl, "GET", null, params);
   }
 
+  async getMainComments(params) {
+    return createRequest(defaultUrl + `/main-comments`, "GET", null, params);
+  }
+
   async filter(params) {
     return createRequest(defaultUrl + `/filter`, "GET", null, params);
   }
