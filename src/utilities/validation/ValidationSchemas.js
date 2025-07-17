@@ -119,7 +119,8 @@ export const ContentValidationSchema = Yup.object({
 
     episodeTime: Yup.number()
         .nullable()
-        .typeError("Episode time must be a number"),
+        .typeError("Episode time must be a number")
+        .positive("Episode time must be positive"),
 
     categoryIds: Yup.array()
         .of(Yup.string())

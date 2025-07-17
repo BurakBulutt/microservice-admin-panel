@@ -3,8 +3,8 @@ import { FaRegCopy } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import {useToast} from "../../utilities/toast/toast.js";
 
-const IdCard = ({ id,objectId }) => {
-  const _id = id || JSON.stringify(objectId);
+const IdCard = ({ id }) => {
+  const _id = id;
   const { t } = useTranslation();
   const toast = useToast();
 
@@ -28,7 +28,7 @@ const IdCard = ({ id,objectId }) => {
       </div>
       <button
         onClick={handleCopy}
-        className="flex items-center justify-center rounded-full p-3 text-3xl text-gray-600 transition duration-200 hover:text-brand-500 dark:text-white"
+        className="flex items-center justify-center cursor-pointer rounded-full p-3 text-3xl text-gray-600 transition duration-200 hover:text-brand-500 dark:text-white"
       >
         <FaRegCopy />
       </button>

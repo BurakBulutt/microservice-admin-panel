@@ -131,6 +131,7 @@
   "reactionService": "Reaction Servis",
   "service": "Servis",
   "entityId": "Varlık Id",
+  "process" : "İşlem",
   "profileSettings": {
     "title": "Profil Ayarları",
     "accountType": "Hesap Türü",

@@ -285,7 +285,7 @@ const ProfileSettings = () => {
                         </div>
                         <div className="flex justify-end mt-10">
                             <button
-                                className="w-fit rounded-2xl bg-brand-500 px-12 py-3 text-sm font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
+                                className="w-fit rounded-2xl cursor-pointer bg-brand-500 px-12 py-3 text-sm font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
                                 {t("profileSettings.saveChanges")}
                             </button>
                         </div>
@@ -323,7 +323,7 @@ const ProfileSettings = () => {
                         </div>
                         <div className="flex justify-end mt-10">
                             <button
-                                className="w-fit rounded-2xl bg-brand-500 px-12 py-3 text-sm font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+                                className="w-fit rounded-2xl cursor-pointer bg-brand-500 px-12 py-3 text-sm font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
                                 onClick={passwordChangeFormik.handleSubmit}
                             >
                                 {t("profileSettings.changePassword.title")}

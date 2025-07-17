@@ -140,7 +140,7 @@ const EntityLog = () => {
       <div className="flex space-x-2">
         <CustomModal
           title={"ID"}
-          component={<IdCard objectId={data.id} />}
+          component={<IdCard id={data.id} />}
           extra={
             "flex cursor-pointer items-center justify-center rounded-lg bg-brand-500 p-2 text-white hover:bg-brand-600"
           }

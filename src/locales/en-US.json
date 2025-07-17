@@ -131,6 +131,7 @@
   "reactionService": "Reaction Service",
   "service": "Service",
   "entityId": "Entity Id",
+  "process" : "Process",
   "profileSettings": {
     "title": "Profile Settings",
     "accountType": "Account Type",

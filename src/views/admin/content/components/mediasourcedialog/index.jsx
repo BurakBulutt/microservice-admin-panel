@@ -47,7 +47,12 @@ const MediaSourceDialog = ({ mediaId }) => {
       .getMediaSources(mediaId)
       .then((response) => {
         if (response.status === 200) {
-          setMediaSources(response.data);
+          setMediaSources(response.data?.map(source => ({
+            url: source.url,
+            type: source.type,
+            fansub: source.fansub,
+            mediaId: source.media.id,
+          })));
         }
       })
       .catch((err) => {
@@ -156,6 +161,8 @@ const MediaSourceDialog = ({ mediaId }) => {
     if (isOpen) {
       getMediaSources();
       setSelectedItem(null);
+    }else {
+      formik.resetForm();
     }
   }, [getMediaSources, isOpen]);
 
@@ -258,7 +265,11 @@ const MediaSourceDialog = ({ mediaId }) => {
                   <FaTrash size={24} />
                 </button>
                 {formik.errors.mediaSourceRequestList &&  (
-                    <div className="ml-2 mt-2 text-red-500">{formik.errors.mediaSourceRequestList}</div>
+                    <div className="ml-2 mt-2 text-red-500">
+                      {typeof formik.errors.mediaSourceRequestList === "string"
+                        ? formik.errors.mediaSourceRequestList
+                        : JSON.stringify(formik.errors.mediaSourceRequestList)}
+                    </div>
                 )}
               </div>
             ))}
