@@ -11,14 +11,13 @@ function App() {
     return (
         <KeycloakContextProvider>
             <Routes>
-                <Route path="*" element={<div>404</div>}/>
                 <Route path="admin/*" element={<AdminLayout/>}/>
-                <Route path="/" element={<Navigate to="/admin" replace/>}/>
+                <Route path="/" element={<Navigate to="admin" replace/>}/>
+                <Route path="*" element={<div>404</div>}/>
             </Routes>
             <ToastContainer/>
         </KeycloakContextProvider>
     );
-
 }
 
 export default App;

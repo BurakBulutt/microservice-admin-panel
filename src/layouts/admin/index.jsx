@@ -10,36 +10,43 @@ import Footer from "../../components/footer/index.jsx";
 
 import { KeycloakContext } from "../../contexts/keycloak/KeycloakContext.jsx";
 
-const routeList = ROUTES;
 
 export const AdminLayout = (props) => {
   const { ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = useState(true);
-  const [currentRoute, setCurrentRoute] = useState(routeList[0]);
+  const [currentRoute, setCurrentRoute] = useState(null);
   const [locale, setLocale] = useState(i18n.language);
   const { kc } = useContext(KeycloakContext);
 
   const getRoutes = (routes) => {
     return routes
       .filter((route) => route.layout === "/admin")
-      .map((route, key) => (
-        <Route key={key} path={getPath(route)} element={route.component} />
-      ));
+      .map((route, key) => {
+        let path = route.parentPath ? `${route.parentPath}/${route.path}` : route.path;
+        return <Route key={key} path={path} element={route.component} />;
+      });
   };
 
   const getActiveRoute = (routes) => {
     for (let i = 0; i < routes.length; i++) {
-      const fullPath = `${routes[i].layout}/${getPath(routes[i])}`.replace(
-        /\/+/g,
-        "/"
-      );
-
+      const fullPath = getFullPath(routes[i]);
       if (matchPath(fullPath, location.pathname)) {
         return routes[i];
       }
     }
     return null;
+  };
+
+  const getFullPath = (route) => {
+    let path = route.layout || "";
+    if (route.parentPath) {
+      path += "/" + route.parentPath;
+    }
+    if (route.path) {
+      path += "/" + route.path;
+    }
+    return path.replace(/\/+/g, "/");
   };
 
   const matchPath = (routePath, currentPath) => {
@@ -49,25 +56,14 @@ export const AdminLayout = (props) => {
     return regexPattern.test(currentPath);
   };
 
-  const getPath = (route) => {
-    if (route.parentPath) {
-      const parentRoute = routeList.find((r) => r.path === route.parentPath);
-
-      if (!parentRoute) throw new Error("Route Error");
-
-      return `${getPath(parentRoute)}/${route.path}`;
-    }
-    return route.path;
-  };
-
   useEffect(() => {
     window.addEventListener("resize", () =>
-        window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
+      window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
     );
   }, []);
 
   useEffect(() => {
-    setCurrentRoute(getActiveRoute(routeList));
+    setCurrentRoute(getActiveRoute(ROUTES));
   }, [location.pathname]);
 
   useEffect(() => {
@@ -96,14 +92,14 @@ export const AdminLayout = (props) => {
               {...rest}
             />
             {/* Routes */}
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
+            <div className="pt-5s mx-auto mb-auto h-full min-h-screen p-2 md:pr-2">
               <Routes>
-                {getRoutes(routeList)}
+                {getRoutes(ROUTES)}
                 <Route
-                  path="/"
-                  element={<Navigate to="/admin/dashboard" replace />}
+                  index
+                  element={<Navigate to="dashboard" replace />}
                 />
-                <Route path="*" element={<div>404</div>}/>
+                <Route path="*" element={<div>404</div>} />
               </Routes>
             </div>
             {/* Footer */}
