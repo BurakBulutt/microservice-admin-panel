@@ -1,5 +1,4 @@
 import axios from "axios";
-import {keycloak} from "../utilities/keycloak/KeycloakConfig.js";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -8,21 +7,18 @@ const axiosInstance = axios.create({
     },
 });
 
-const createRequest = async (uri, method, data, params) => {
-
-    if (keycloak.isTokenExpired(-1)) {
-        await keycloak.updateToken(-1);
-    }
-
-    const token = keycloak.token;
+const createRequest = async (uri, method, data, params,headers) => {
 
     const config = {
         method,
         url: `api/${uri}`,
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        headers: headers ? headers : {},
     };
+
+    if(!uri.startsWith("auth/login")) {
+        const token = localStorage.getItem("access_token");
+        config.headers.Authorization = `Bearer ${token}`;
+    }
 
     if (data) {
         config.data = data;
@@ -35,6 +31,7 @@ const createRequest = async (uri, method, data, params) => {
         return await axiosInstance(config);
     } catch (error) {
         console.error(error);
+        //TODO Refresh Token flow will be here
         throw error;
     }
 };

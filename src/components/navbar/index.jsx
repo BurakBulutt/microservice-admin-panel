@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {FiAlignJustify} from "react-icons/fi";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import {FiSearch} from "react-icons/fi";
 import {RiMoonFill, RiSunFill} from "react-icons/ri";
@@ -9,19 +9,21 @@ import {useTranslation} from "react-i18next";
 import Dropdown from "../dropdown/index.jsx";
 import {useToast} from "../../utilities/toast/toast.js";
 import CustomErrorToast from "../toast/CustomErrorToast.jsx";
-import {ROUTES} from "../../layouts/admin/routes.jsx";
+import {ROUTES} from "../../layouts/routes.jsx";
 import useReactRouterBreadcrumbs from "use-react-router-breadcrumbs";
 import {ContentService} from "../../services/ContentService.js";
 
 import defaultImage from "../../assets/img/profile/image1.png"
+import {AuthService} from "../../services/AuthService.js";
 
 
 const routes = ROUTES;
 
 const contentService = new ContentService();
+const authService = new AuthService();
 
 const Navbar = ({
-                    onOpenSidenav, currentRoute, locale, changeLocale, keycloak,
+                    onOpenSidenav, currentRoute, locale, changeLocale
                 }) => {
     const [darkmode, setDarkmode] = useState(false);
     const [userProfile, setUserProfile] = useState({});
@@ -30,6 +32,7 @@ const Navbar = ({
     const [searchResultVisible, setSearchResultVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResult, setSearchResult] = useState([]);
+    const navigate = useNavigate();
 
     const localeOptions = [
         {
@@ -103,14 +106,17 @@ const Navbar = ({
     }, [catchError]);
 
     useEffect(() => {
-        keycloak
-            .loadUserProfile()
-            .then((profile) => {
-                setUserProfile(profile);
+        authService
+            .getUserInfo()
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log(response.data);
+                    setUserProfile(response.data);
+                }
             })
             .catch((err) => catchError(err, {}));
 
-    }, [keycloak, catchError]);
+    }, [catchError]);
 
     useEffect(() => {
         if (searchQuery.length >= 2) {
@@ -260,7 +266,10 @@ const Navbar = ({
 
                         <div
                             className="cursor-pointer flex flex-col p-5"
-                            onClick={() => keycloak.logout({redirectUri: window.location.origin})}
+                            onClick={() => {
+                                localStorage.removeItem("access_token");
+                                navigate("/", { replace: true });
+                            }}
                         >
                             <a
                                 href="#"

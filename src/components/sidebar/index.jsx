@@ -3,7 +3,7 @@
 import { HiX } from "react-icons/hi";
 import Links from "./components/Links";
 
-import {ROUTES} from "../../layouts/admin/routes.jsx";
+import {ROUTES} from "../../layouts/routes.jsx";
 
 const Sidebar = ({ open, onClose }) => {
   const routes = ROUTES;

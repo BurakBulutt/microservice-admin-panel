@@ -7,21 +7,17 @@ import {
     UserChangePasswordValidationSchema,
     UserUpdateValidationSchema,
 } from "../../../utilities/validation/ValidationSchemas";
-import {useCallback, useContext, useEffect, useState} from "react";
-import {UserService} from "../../../services/UserService";
+import {useCallback,useEffect, useState} from "react";
 import {useToast} from "../../../utilities/toast/toast";
 import CustomErrorToast from "../../../components/toast/CustomErrorToast";
-import {KeycloakContext} from "../../../contexts/keycloak/KeycloakContext";
+import {AuthService} from "../../../services/AuthService.js";
 
-const service = new UserService();
+const service = new AuthService();
 
 const ProfileSettings = () => {
     const {t} = useTranslation();
     const toast = useToast();
 
-    const {kc} = useContext(KeycloakContext);
-
-    const [id, setId] = useState(null);
     const [profile, setProfile] = useState(null);
 
     const formik = useFormik({
@@ -66,33 +62,21 @@ const ProfileSettings = () => {
     );
 
     const getProfile = useCallback(() => {
-        if (id) {
-            service
-                .getById(id)
-                .then((response) => {
-                    if (response.status === 200) {
-                        setProfile(response.data);
-                        formik.setValues({
-                            ...formik.values,
-                            ...response.data,
-                        });
-                    }
-                })
-                .catch((error) => {
-                    catchError(error, {});
-                });
-        }
-    }, [catchError,id]);
-
-    useEffect(() => {
-        kc.loadUserProfile()
-            .then((profile) => {
-                setId(profile.id);
+        service
+            .getUserInfo()
+            .then((response) => {
+                if (response.status === 200) {
+                    setProfile(response.data);
+                    formik.setValues({
+                        ...formik.values,
+                        ...response.data,
+                    });
+                }
             })
-            .catch((err) => catchError(err, {
-                onClose: () => kc.login
-            }));
-    }, [kc,catchError]);
+            .catch((error) => {
+                catchError(error, {});
+            });
+    }, [catchError]);
 
     useEffect(() => {
         getProfile();
@@ -100,11 +84,11 @@ const ProfileSettings = () => {
 
     const updateProfile = (values) => {
         service
-            .updateProfile(id, values)
+            .updateProfile(profile.id, values)
             .then((response) => {
                 if (response.status === 204) {
                     toast.success(t("success"), {
-                        onClose: () => getProfile(id),
+                        onClose: () => getProfile(),
                     });
                 }
             })
@@ -114,21 +98,7 @@ const ProfileSettings = () => {
     };
 
     const updatePassword = (values) => {
-        service
-            .changePassword(id, values)
-            .then((response) => {
-                if (response.status === 204) {
-                    toast.success(t("success"), {
-                        onClose: () => {
-                            passwordChangeFormik.resetForm();
-                            kc.logout({redirectUri: window.location.origin});
-                        },
-                    });
-                }
-            })
-            .catch((error) => {
-                catchError(error, {});
-            });
+        console.log("updatePassword : {0}", values);
     };
 
     const capitalizeFirstLetter = (str) => {
@@ -171,7 +141,7 @@ const ProfileSettings = () => {
                                 </p>
                                 {" "}
                                 <p className="text-sm font-bold text-navy-900 dark:text-white">
-                                    {t("profileSettings.admin")}
+                                    {profile?.role}
                                 </p>
                             </div>
                         </div>
@@ -226,17 +196,6 @@ const ProfileSettings = () => {
                                     type="text"
                                     state={formik.errors?.lastName && "error"}
                                     value={formik.values.lastName}
-                                    onChange={formik.handleChange}
-                                />
-                            </div>
-                            <div className="flex-1 min-w-[30vh]">
-                                <InputField
-                                    label={t("birthdate")}
-                                    placeholder={t("birthdate")}
-                                    name="birthdate"
-                                    type="date"
-                                    state={formik.errors?.birthdate && "error"}
-                                    value={formik.values.birthdate}
                                     onChange={formik.handleChange}
                                 />
                             </div>

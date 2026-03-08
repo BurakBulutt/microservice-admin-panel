@@ -1,14 +1,12 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { ROUTES } from "./routes.jsx";
+import { ROUTES } from "../routes.jsx";
 import Sidebar from "../../components/sidebar/index.jsx";
 
 import i18n from "i18next";
 import Navbar from "../../components/navbar/index.jsx";
 import Footer from "../../components/footer/index.jsx";
-
-import { KeycloakContext } from "../../contexts/keycloak/KeycloakContext.jsx";
 
 
 export const AdminLayout = (props) => {
@@ -17,7 +15,7 @@ export const AdminLayout = (props) => {
   const [open, setOpen] = useState(true);
   const [currentRoute, setCurrentRoute] = useState(null);
   const [locale, setLocale] = useState(i18n.language);
-  const { kc } = useContext(KeycloakContext);
+  const navigate = useNavigate();
 
   const getRoutes = (routes) => {
     return routes
@@ -88,7 +86,6 @@ export const AdminLayout = (props) => {
               currentRoute={currentRoute}
               locale={locale}
               changeLocale={(locale) => setLocale(locale)}
-              keycloak={kc}
               {...rest}
             />
             {/* Routes */}

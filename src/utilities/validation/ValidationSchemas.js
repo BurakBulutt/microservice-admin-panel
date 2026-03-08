@@ -247,4 +247,17 @@ export const XmlDefinitionValidationSchema = Yup.object({
         .min(1, "Base64 content cannot be blank"),
 });
 
+export const LoginValidationSchema = Yup.object({
+    username: Yup.string()
+        .required("Username is required")
+        .trim()
+        .min(1, "Username cannot be blank"),
+    password: Yup.string()
+        .required("Password is required")
+        .matches(
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])[A-Za-z0-9\s~!@#$%^&*()_+\-={}:;"',<.>/?]{8,}$/,
+            "Password must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character and be 8+ characters"
+        )
+});
+
 

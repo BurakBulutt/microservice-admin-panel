@@ -1,19 +1,20 @@
 import { MdDataObject, MdHome } from "react-icons/md";
-import Dashboard from "../../views/admin/dashboard/index.jsx";
-import Users from "../../views/admin/users/index.jsx";
+import Dashboard from "../views/admin/dashboard/index.jsx";
+import Users from "../views/admin/users/index.jsx";
 import { BiCategory, BiComment, BiUser } from "react-icons/bi";
-import Category from "../../views/admin/category/index.jsx";
+import Category from "../views/admin/category/index.jsx";
 import { SiContentful } from "react-icons/si";
-import Content from "../../views/admin/content/index.jsx";
-import Comment from "../../views/admin/comment/index.jsx";
-import XmlDefinition from "../../views/admin/xmldefination/index.jsx";
+import Content from "../views/admin/content/index.jsx";
+import Comment from "../views/admin/comment/index.jsx";
+import XmlDefinition from "../views/admin/xmldefination/index.jsx";
 import { BsFiletypeXml } from "react-icons/bs";
-import EntityLog from "../../views/admin/entitylog/index.jsx";
-import ProfileSettings from "../../views/admin/profile/index.jsx";
-import Fansub from "../../views/admin/fansub/index.jsx";
+import EntityLog from "../views/admin/entitylog/index.jsx";
+import ProfileSettings from "../views/admin/profile/index.jsx";
+import Fansub from "../views/admin/fansub/index.jsx";
 import {FaClosedCaptioning} from "react-icons/fa";
-import CreateContent from "../../views/admin/content/components/createcontent/index.jsx";
-import UpdateContent from "../../views/admin/content/components/updatecontent/index.jsx";
+import CreateContent from "../views/admin/content/components/createcontent/index.jsx";
+import UpdateContent from "../views/admin/content/components/updatecontent/index.jsx";
+import SignIn from "../views/auth/SignIn.jsx";
 
 export const ROUTES = [
   {
@@ -99,5 +100,11 @@ export const ROUTES = [
     layout: "/admin",
     path: "profile",
     component: <ProfileSettings />,
-  }
+  },
+  {
+    name: "Sign In",
+    layout: "/auth",
+    path: "sign-in",
+    component: <SignIn />,
+  },
 ];
