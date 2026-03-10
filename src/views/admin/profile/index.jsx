@@ -86,9 +86,9 @@ const ProfileSettings = () => {
         service
             .updateProfile(profile.id, values)
             .then((response) => {
-                if (response.status === 204) {
+                if (response.status === 200) {
                     toast.success(t("success"), {
-                        onClose: () => getProfile(),
+                        onClose: () => window.location.reload(),
                     });
                 }
             })
@@ -111,7 +111,7 @@ const ProfileSettings = () => {
 
     return (
         profile && (
-            <div className="w-full min-h-screen flex flex-wrap gap-4">
+            <div className="w-full min-h-screen">
                 <div className="flex flex-col gap-4">
                     <Card extra={"items-center w-full h-fit p-[16px] bg-cover"}>
                         {/* Background and profile */}
@@ -290,7 +290,6 @@ const ProfileSettings = () => {
                         </div>
                     </Card>
                 </div>
-                <div className="flex flex-col gap-2"></div>
             </div>
         )
     );

@@ -32,6 +32,12 @@ const createRequest = async (uri, method, data, params,headers) => {
     } catch (error) {
         console.error(error);
         //TODO Refresh Token flow will be here
+
+        if (error.status === 401) {
+            localStorage.removeItem("access_token");
+            window.location.reload();
+        }
+
         throw error;
     }
 };

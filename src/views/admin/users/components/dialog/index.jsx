@@ -108,51 +108,27 @@ const UserDialog = (props) => {
                     <div className="text-red-500">{formik.errors.passwordRe}</div>
                 )}
               </div>
-              <div className="mb-4 ml-2">
-                <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("passwordTemporary")}</label>
-                <Switch
-                  id="isPasswordTemporary"
-                  checked={formik.values.isPasswordTemporary}
-                  onChange={(e) => {
-                    formik.setFieldValue("isPasswordTemporary", e.target.checked);
-                  }}
-                />
-              </div>
             </>
           )}
           <div className="mb-4 ml-2">
             <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("enabled")}</label>
             <Switch
-                id="enabled"
-                checked={formik.values.enabled}
+                id="isEnabled"
+                checked={formik.values.isEnabled}
                 onChange={(e) => {
-                  formik.setFieldValue("enabled", e.target.checked);
+                  formik.setFieldValue("isEnabled", e.target.checked);
                 }}
             />
           </div>
           <div className="mb-4 ml-2">
             <label className="mb-2 block text-sm font-bold text-navy-700 dark:text-white">{t("emailVerified")}</label>
             <Switch
-                id="emailVerified"
-                checked={formik.values.emailVerified}
+                id="isVerified"
+                checked={formik.values.isVerified}
                 onChange={(e) => {
-                  formik.setFieldValue("emailVerified", e.target.checked);
+                  formik.setFieldValue("isVerified", e.target.checked);
                 }}
             />
-          </div>
-          <div className="mb-4">
-            <InputField
-                label={t("birthdate")}
-                placeholder={t("birthdate")}
-                name="birthdate"
-                type="date"
-                state={formik.errors?.birthdate &&  "error"}
-                value={formik.values?.birthdate}
-                onChange={formik.handleChange}
-            />
-            {formik.errors.birthdate  &&  (
-                <div className="text-red-500">{formik.errors.birthdate}</div>
-            )}
           </div>
           <div className="flex justify-end">
             <button

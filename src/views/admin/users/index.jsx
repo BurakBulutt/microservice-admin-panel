@@ -57,11 +57,8 @@ const Users = (props) => {
     email: "",
     password: "",
     passwordRe: "",
-    isPasswordTemporary: false,
-    enabled: false,
-    emailVerified: false,
-    requiredActions: [],
-    birthdate: null,
+    isEnabled: false,
+    isVerified: false,
   };
   const formik = useFormik({
     initialValues: baseRequest,

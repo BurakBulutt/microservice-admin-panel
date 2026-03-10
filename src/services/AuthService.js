@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     async updateProfile(id, request) {
-        return createRequest(defaultUrl + `/${id}/update-profile`, "PUT", request, null);
+        return createRequest(defaultUrl + `/update-profile/${id}`, "PUT", request, null);
     }
 }
 

@@ -12,6 +12,7 @@ import CustomErrorToast from "../toast/CustomErrorToast.jsx";
 import {ROUTES} from "../../layouts/routes.jsx";
 import useReactRouterBreadcrumbs from "use-react-router-breadcrumbs";
 import {ContentService} from "../../services/ContentService.js";
+import ReactCountryFlag from "react-country-flag";
 
 import defaultImage from "../../assets/img/profile/image1.png"
 import {AuthService} from "../../services/AuthService.js";
@@ -36,12 +37,34 @@ const Navbar = ({
 
     const localeOptions = [
         {
-            code: "tr-TR", label: t("turkish"), icon: <span className="text-lg" translate="no">🇹🇷</span>,
+            code: "tr",
+            label: t("turkish"),
+            icon: (
+                <ReactCountryFlag
+                    countryCode="TR"
+                    svg
+                    style={{width: "1.25rem", height: "1.25rem"}}
+                    title={t("turkish")}
+                />
+            ),
         },
         {
-            code: "en-US", label: t("english"), icon: <span className="text-lg" translate="no">🇺🇸</span>,
+            code: "en",
+            label: t("english"),
+            icon: (
+                <ReactCountryFlag
+                    countryCode="US"
+                    svg
+                    style={{width: "1.25rem", height: "1.25rem"}}
+                    title={t("english")}
+                />
+            ),
         }
     ];
+
+    const normalizedLocale = (locale || "tr").split("-")[0].toLowerCase();
+    const selectedLocaleOption =
+        localeOptions.find((opt) => opt.code === normalizedLocale) || localeOptions[0];
 
     const profileImageUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${userProfile?.firstName?.charAt(0) + userProfile?.lastName?.charAt(0)}&padding=20&fontSize=40&backgroundColor=24388a`;
 
@@ -200,7 +223,7 @@ const Navbar = ({
                     button={
                         <div
                             className="flex cursor-pointer items-center gap-1 px-2 py-1 text-lg text-gray-600 dark:text-white">
-                            {localeOptions.find((opt) => opt.code === locale)?.icon}
+                            {selectedLocaleOption.icon}
                         </div>
                     }
                     children={

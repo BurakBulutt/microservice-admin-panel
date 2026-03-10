@@ -1,4 +1,3 @@
-import header from "../header";
 
 export const usersColumnsData = [
   {
@@ -12,12 +11,6 @@ export const usersColumnsData = [
     priority: 1,
   },
   {
-    accessor: "createdTimestamp",
-    type: "date",
-    priority: 2,
-    isSortable: true,
-  },
-  {
     accessor: "username",
     type: "text",
     priority: 3,
@@ -28,13 +21,7 @@ export const usersColumnsData = [
     priority: 4,
   },
   {
-    accessor: "birthdate",
-    type: "date",
-    priority: 5,
-    isSortable: true,
-  },
-  {
-    accessor: "emailVerified",
+    accessor: "isVerified",
     type: "boolean",
     booleanTrue: "verified",
     booleanFalse: "notVerified",
@@ -42,7 +29,7 @@ export const usersColumnsData = [
     isSortable: true,
   },
   {
-    accessor: "enabled",
+    accessor: "isEnabled",
     type: "boolean",
     booleanTrue: "active",
     booleanFalse: "passive",

@@ -39,15 +39,11 @@ export const UserCreateValidationSchema = Yup.object({
     isPasswordTemporary: Yup.boolean()
         .required("Temporary password switch is required"),
 
-    enabled: Yup.boolean()
-        .required("Enabled switch is required"),
+    isEnabled: Yup.boolean()
+        .required("Enabled is required"),
 
-    emailVerified: Yup.boolean()
-        .required("Email verification switch is required"),
-
-    birthdate: Yup.date()
-        .required("Birthdate is required")
-        .typeError("Birthdate must be a valid date"),
+    isVerified: Yup.boolean()
+        .required("Email verified switch is required"),
 });
 
 export const UserUpdateValidationSchema = Yup.object({
@@ -65,15 +61,11 @@ export const UserUpdateValidationSchema = Yup.object({
         .required("Email is required")
         .email("Should be a valid email format"),
 
-    enabled: Yup.boolean()
-        .required("Enabled switch is required"),
+    isEnabled: Yup.boolean()
+        .required("Enabled is required"),
 
-    emailVerified: Yup.boolean()
+    isVerified: Yup.boolean()
         .required("Email verified switch is required"),
-
-    birthdate: Yup.date()
-        .required("Birthdate is required")
-        .typeError("Birthdate must be a valid date"),
 });
 
 
